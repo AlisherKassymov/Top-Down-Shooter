@@ -1,5 +1,6 @@
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Controls
 {
@@ -7,39 +8,49 @@ namespace Controls
     {
         private static readonly int XVelocity = Animator.StringToHash("xVelocity");
         private static readonly int ZVelocity = Animator.StringToHash("zVelocity");
-        
-        [FoldoutGroup("MovementSettings")][SerializeField] private float _movementSpeed = 5f;
-        [FoldoutGroup("MovementSettings")][SerializeField] private float _verticalVelocity = 0f;
-        private Vector3 _movementDirection;
-        private Vector2 _moveInput; 
+        private static readonly int IsRunning = Animator.StringToHash("isRunning");
 
-        [FoldoutGroup("Aim Settings")] [SerializeField] private LayerMask _aimLayerMask;
-        [FoldoutGroup("Aim Settings")] [SerializeField] private Transform _aim;
+        [FoldoutGroup("MovementSettings")] [SerializeField]
+        private float _walkSpeed = 5f;
+
+        [FoldoutGroup("MovementSettings")] [SerializeField]
+        private float _runningSpeed = 10f;
+
+        [FoldoutGroup("MovementSettings")] [SerializeField]
+        private float _verticalVelocity = 0f;
+
+        private float _speed;
+        private Vector3 _movementDirection;
+        private Vector2 _moveInput;
+        private bool _isRunning;
+
+
+        [FoldoutGroup("Aim Settings")] [SerializeField]
+        private LayerMask _aimLayerMask;
+
+        [FoldoutGroup("Aim Settings")] [SerializeField]
+        private Transform _aim;
+
         private Vector3 _lookingDirection;
-        private Vector2 _aimInput; 
-        
+        private Vector2 _aimInput;
+
         private PlayerControls _playerControls;
         private CharacterController _characterController;
         private Animator _animator;
-        
+
 
         private void Awake()
         {
-            _playerControls = new PlayerControls();
-            
-            _playerControls.Character.Movement.performed += ctx => _moveInput = ctx.ReadValue<Vector2>();
-            _playerControls.Character.Movement.canceled += ctx => _moveInput = Vector2.zero;
-            
-            _playerControls.Character.Aim.performed += ctx => _aimInput = ctx.ReadValue<Vector2>();
-            _playerControls.Character.Aim.canceled += ctx => _aimInput = Vector2.zero;
+            AssignInputEvents();
         }
 
         private void Start()
         {
             _characterController = GetComponent<CharacterController>();
             _animator = GetComponentInChildren<Animator>();
+            _speed = _walkSpeed;
         }
-        
+
         private void OnEnable()
         {
             _playerControls.Enable();
@@ -61,9 +72,12 @@ namespace Controls
         {
             float xVelocity = Vector3.Dot(_movementDirection.normalized, transform.right);
             float zVelocity = Vector3.Dot(_movementDirection.normalized, transform.forward);
-            
+
             _animator.SetFloat(XVelocity, xVelocity, .1f, Time.deltaTime);
-            _animator.SetFloat(ZVelocity, zVelocity, .1f , Time.deltaTime);
+            _animator.SetFloat(ZVelocity, zVelocity, .1f, Time.deltaTime);
+
+            bool playRunAnimation = _isRunning && _movementDirection.magnitude > 0;
+            _animator.SetBool(IsRunning, playRunAnimation);
         }
 
         private void AimTowardsMouse()
@@ -87,7 +101,7 @@ namespace Controls
             ApplyGravity();
             if (_movementDirection.magnitude > 0)
             {
-                _characterController.Move(_movementDirection * (Time.deltaTime * _movementSpeed));
+                _characterController.Move(_movementDirection * (Time.deltaTime * _speed));
             }
         }
 
@@ -95,13 +109,35 @@ namespace Controls
         {
             if (!_characterController.isGrounded)
             {
-                _verticalVelocity -= 9.81f *Time.deltaTime;
+                _verticalVelocity -= 9.81f * Time.deltaTime;
                 _movementDirection.y = _verticalVelocity;
             }
             else
             {
                 _verticalVelocity = -0.5f;
             }
+        }
+
+        private void AssignInputEvents()
+        {
+            _playerControls = new PlayerControls();
+
+            _playerControls.Character.Movement.performed += ctx => _moveInput = ctx.ReadValue<Vector2>();
+            _playerControls.Character.Movement.canceled += ctx => _moveInput = Vector2.zero;
+
+            _playerControls.Character.Aim.performed += ctx => _aimInput = ctx.ReadValue<Vector2>();
+            _playerControls.Character.Aim.canceled += ctx => _aimInput = Vector2.zero;
+
+            _playerControls.Character.Run.performed += ctx =>
+            {
+                _isRunning = true;
+                _speed = _runningSpeed;
+            };
+            _playerControls.Character.Run.canceled += ctx =>
+            {
+                _isRunning = false;
+                _speed = _walkSpeed;
+            };
         }
     }
 }
