@@ -9,6 +9,7 @@ namespace Controls
         private static readonly int XVelocity = Animator.StringToHash("xVelocity");
         private static readonly int ZVelocity = Animator.StringToHash("zVelocity");
         private static readonly int IsRunning = Animator.StringToHash("isRunning");
+        private static readonly int Fire = Animator.StringToHash("Shoot");
 
         [FoldoutGroup("MovementSettings")] [SerializeField]
         private float _walkSpeed = 5f;
@@ -68,6 +69,10 @@ namespace Controls
             GetAnimatorControllers();
         }
 
+        private void Shoot()
+        {
+            _animator.SetTrigger(Fire);
+        }
         private void GetAnimatorControllers()
         {
             float xVelocity = Vector3.Dot(_movementDirection.normalized, transform.right);
@@ -122,6 +127,8 @@ namespace Controls
         {
             _playerControls = new PlayerControls();
 
+            _playerControls.Character.Shoot.performed += ctx => Shoot();
+            
             _playerControls.Character.Movement.performed += ctx => _moveInput = ctx.ReadValue<Vector2>();
             _playerControls.Character.Movement.canceled += ctx => _moveInput = Vector2.zero;
 

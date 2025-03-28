@@ -313,13 +313,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.35592264, y: 0, z: 0, w: 0.9345155}
-  m_LocalPosition: {x: 0, y: 6.89, z: -5.89}
+  m_LocalRotation: {x: 0.32896203, y: -0, z: -0, w: 0.94434315}
+  m_LocalPosition: {x: 0, y: 4.23, z: -3.42}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 41.7, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 38.412, y: 0, z: 0}
 --- !u!114 &330585547
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -947,7 +947,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23980d73cae0feb4b922870edb8ec58d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _movementSpeed: 2
+  _walkSpeed: 3
+  _runningSpeed: 5
   _verticalVelocity: 0
   _aimLayerMask:
     serializedVersion: 2
@@ -1374,9 +1375,17 @@ PrefabInstance:
       propertyPath: m_AABB.m_Extent.z
       value: 0.020959504
       objectReference: {fileID: 0}
+    - target: {fileID: -5250164853497157054, guid: ed2c91f3bdb92ad48acb03e02905a1c5, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: ed2c91f3bdb92ad48acb03e02905a1c5, type: 3}
       propertyPath: m_Name
-      value: unitychan@Rifle Aiming Idle with scin
+      value: unitychan@Rifle Aiming Idle with skin
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: ed2c91f3bdb92ad48acb03e02905a1c5, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1977181605402416322, guid: ed2c91f3bdb92ad48acb03e02905a1c5, type: 3}
       propertyPath: m_DirtyAABB
@@ -1454,6 +1463,14 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: b148073b632ff5b4ca7d502ead5700cb, type: 2}
+    - target: {fileID: 5866666021909216657, guid: ed2c91f3bdb92ad48acb03e02905a1c5, type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6989738803894004441, guid: ed2c91f3bdb92ad48acb03e02905a1c5, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
