@@ -1,6 +1,5 @@
 using Sirenix.OdinInspector;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Controls
 {
@@ -20,6 +19,7 @@ namespace Controls
         [FoldoutGroup("MovementSettings")] [SerializeField]
         private float _verticalVelocity = 0f;
 
+        private Player _player;
         private float _speed;
         private Vector3 _movementDirection;
         private Vector2 _moveInput;
@@ -39,28 +39,15 @@ namespace Controls
         private CharacterController _characterController;
         private Animator _animator;
 
-
-        private void Awake()
-        {
-            AssignInputEvents();
-        }
-
         private void Start()
         {
+            _player = GetComponent<Player>();
             _characterController = GetComponent<CharacterController>();
             _animator = GetComponentInChildren<Animator>();
             _speed = _walkSpeed;
+            AssignInputEvents();
         }
 
-        private void OnEnable()
-        {
-            _playerControls.Enable();
-        }
-
-        private void OnDisable()
-        {
-            _playerControls.Disable();
-        }
 
         private void Update()
         {
@@ -69,10 +56,8 @@ namespace Controls
             GetAnimatorControllers();
         }
 
-        private void Shoot()
-        {
-            _animator.SetTrigger(Fire);
-        }
+        
+
         private void GetAnimatorControllers()
         {
             float xVelocity = Vector3.Dot(_movementDirection.normalized, transform.right);
@@ -125,10 +110,9 @@ namespace Controls
 
         private void AssignInputEvents()
         {
-            _playerControls = new PlayerControls();
-
-            _playerControls.Character.Shoot.performed += ctx => Shoot();
+            _playerControls = _player.PlayerControls;
             
+
             _playerControls.Character.Movement.performed += ctx => _moveInput = ctx.ReadValue<Vector2>();
             _playerControls.Character.Movement.canceled += ctx => _moveInput = Vector2.zero;
 
