@@ -81,7 +81,7 @@ namespace Controls
 
                 transform.forward = _lookingDirection;
 
-                _aim.position = new Vector3(hitInfo.point.x, transform.position.y, hitInfo.point.z);
+                _aim.position = new Vector3(hitInfo.point.x, transform.position.y + 1, hitInfo.point.z);
             }
         }
 
