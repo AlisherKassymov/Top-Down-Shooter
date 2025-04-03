@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace Controllers
@@ -12,6 +13,16 @@ namespace Controllers
         [SerializeField] private Transform _shotgun;
         [SerializeField] private Transform _sniperRifle;
 
+        [Header("Left Hand IK")] [SerializeField]
+        private Transform _leftHand;
+
+        private Transform _currentGun;
+
+
+        private void Start()
+        {
+            SwitchOnWeapon(_pistol);
+        }
 
         private void Update()
         {
@@ -45,6 +56,8 @@ namespace Controllers
         {
             SwitchOffWeapons();
             weapon.gameObject.SetActive(true);
+            _currentGun = weapon;
+            AttachLeftHand();
         }
 
         private void SwitchOffWeapons()
@@ -53,6 +66,13 @@ namespace Controllers
             {
                 t.gameObject.SetActive(false);
             }
+        }
+
+        private void AttachLeftHand()
+        {
+            Transform targetTransform = _currentGun.GetComponentInChildren<LeftHandTargetTransform>().transform;
+            _leftHand.localPosition = targetTransform.localPosition;
+            _leftHand.localRotation = targetTransform.localRotation;
         }
     }
 }
