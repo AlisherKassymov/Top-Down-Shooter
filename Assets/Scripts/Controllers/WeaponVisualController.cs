@@ -17,11 +17,13 @@ namespace Controllers
         private Transform _leftHand;
 
         private Transform _currentGun;
+        private Animator _animator;
 
 
         private void Start()
         {
             SwitchOnWeapon(_pistol);
+            _animator = GetComponentInChildren<Animator>();
         }
 
         private void Update()
@@ -29,26 +31,31 @@ namespace Controllers
             if (Input.GetKeyDown(KeyCode.Alpha1))
             {
                 SwitchOnWeapon(_pistol);
+                SwitchAnimationLayer(1);
             }
 
             if (Input.GetKeyDown(KeyCode.Alpha2))
             {
                 SwitchOnWeapon(_revolver);
+                SwitchAnimationLayer(1);
             }
 
             if (Input.GetKeyDown(KeyCode.Alpha3))
             {
                 SwitchOnWeapon(_rifle);
+                SwitchAnimationLayer(1);
             }
 
             if (Input.GetKeyDown(KeyCode.Alpha4))
             {
                 SwitchOnWeapon(_shotgun);
+                SwitchAnimationLayer(2);
             }
 
             if (Input.GetKeyDown(KeyCode.Alpha5))
             {
                 SwitchOnWeapon(_sniperRifle);
+                SwitchAnimationLayer(3);
             }
         }
 
@@ -73,6 +80,15 @@ namespace Controllers
             Transform targetTransform = _currentGun.GetComponentInChildren<LeftHandTargetTransform>().transform;
             _leftHand.localPosition = targetTransform.localPosition;
             _leftHand.localRotation = targetTransform.localRotation;
+        }
+
+        private void SwitchAnimationLayer(int index)
+        {
+            for (int i = 1; i < _animator.layerCount; i++)
+            {
+                _animator.SetLayerWeight(i,0);
+            }
+            _animator.SetLayerWeight(index,1);
         }
     }
 }
