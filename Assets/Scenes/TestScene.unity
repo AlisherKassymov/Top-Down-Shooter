@@ -1451,8 +1451,10 @@ MonoBehaviour:
   _rifle: {fileID: 2040196740}
   _shotgun: {fileID: 1711191161}
   _sniperRifle: {fileID: 628052647}
-  _leftHand: {fileID: 2001458868}
-  _rigIncreaseStep: 2.5
+  _leftHandIK: {fileID: 1534136822}
+  _leftHandIKTarget: {fileID: 2001458868}
+  _leftHandIKIncreaseStep: 2.5
+  _rigIncreaseStep: 2.75
 --- !u!1 &1469488377
 GameObject:
   m_ObjectHideFlags: 0
