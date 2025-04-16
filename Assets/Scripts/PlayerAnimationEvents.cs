@@ -4,26 +4,26 @@ using UnityEngine;
 
 public class PlayerAnimationEvents : MonoBehaviour
 {
-    private WeaponVisualController _weaponVisualController;
+    private PlayerWeaponVisuals _playerWeaponVisuals;
 
     private void Start()
     {
-        _weaponVisualController = GetComponentInParent<WeaponVisualController>();
+        _playerWeaponVisuals = GetComponentInParent<PlayerWeaponVisuals>();
     }
 
     public void CompleteReloadAnimation()
     {
-        _weaponVisualController.ReturnRigWeightToOne();
+        _playerWeaponVisuals.MaximizeRigWeight();
         //Refill ammo
     }
 
     public void ReturnRig()
     {
-        _weaponVisualController.ReturnRigWeightToOne();
-        _weaponVisualController.ReturnLeftHandIK();
+        _playerWeaponVisuals.MaximizeRigWeight();
+        _playerWeaponVisuals.MaximizeLeftHandIKWeight();
     }
     public void CompleteWeaponGrab()
     {
-        _weaponVisualController.SetBusyGrabbingWeaponTo(false);
+        _playerWeaponVisuals.SetBusyGrabbingWeaponTo(false);
     }
 }
