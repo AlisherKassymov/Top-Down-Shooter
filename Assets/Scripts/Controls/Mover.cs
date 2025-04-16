@@ -8,7 +8,6 @@ namespace Controls
         private static readonly int XVelocity = Animator.StringToHash("xVelocity");
         private static readonly int ZVelocity = Animator.StringToHash("zVelocity");
         private static readonly int IsRunning = Animator.StringToHash("isRunning");
-        private static readonly int Fire = Animator.StringToHash("Shoot");
 
         [FoldoutGroup("MovementSettings")] [SerializeField]
         private float _walkSpeed = 5f;
@@ -24,17 +23,7 @@ namespace Controls
         private Vector3 _movementDirection;
         private Vector2 _moveInput;
         private bool _isRunning;
-
-
-        [FoldoutGroup("Aim Settings")] [SerializeField]
-        private LayerMask _aimLayerMask;
-
-        [FoldoutGroup("Aim Settings")] [SerializeField]
-        private Transform _aim;
-
-        private Vector3 _lookingDirection;
-        private Vector2 _aimInput;
-
+        
         private PlayerControls _playerControls;
         private CharacterController _characterController;
         private Animator _animator;
@@ -52,11 +41,10 @@ namespace Controls
         private void Update()
         {
             ApplyMovement();
-            AimTowardsMouse();
+            ApplyRotation();
             GetAnimatorControllers();
         }
 
-        
 
         private void GetAnimatorControllers()
         {
@@ -70,19 +58,13 @@ namespace Controls
             _animator.SetBool(IsRunning, playRunAnimation);
         }
 
-        private void AimTowardsMouse()
+        private void ApplyRotation()
         {
-            Ray ray = Camera.main.ScreenPointToRay(_aimInput);
-            if (Physics.Raycast(ray, out var hitInfo, Mathf.Infinity, _aimLayerMask))
-            {
-                _lookingDirection = hitInfo.point - transform.position;
-                _lookingDirection.y = 0f;
-                _lookingDirection.Normalize();
+            var lookingDirection = _player.PlayerAim.GetMousePosition() - transform.position;
+            lookingDirection.y = 0f;
+            lookingDirection.Normalize();
 
-                transform.forward = _lookingDirection;
-
-                _aim.position = new Vector3(hitInfo.point.x, transform.position.y + 1, hitInfo.point.z);
-            }
+            transform.forward = lookingDirection;
         }
 
         private void ApplyMovement()
@@ -111,13 +93,11 @@ namespace Controls
         private void AssignInputEvents()
         {
             _playerControls = _player.PlayerControls;
-            
+
 
             _playerControls.Character.Movement.performed += ctx => _moveInput = ctx.ReadValue<Vector2>();
             _playerControls.Character.Movement.canceled += ctx => _moveInput = Vector2.zero;
 
-            _playerControls.Character.Aim.performed += ctx => _aimInput = ctx.ReadValue<Vector2>();
-            _playerControls.Character.Aim.canceled += ctx => _aimInput = Vector2.zero;
 
             _playerControls.Character.Run.performed += ctx =>
             {

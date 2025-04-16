@@ -12,6 +12,11 @@ namespace Controllers
         {
             _animator = GetComponentInChildren<Animator>();
             _player = GetComponent<Player>();
+            AssignInputEvents();
+        }
+
+        private void AssignInputEvents()
+        {
             _player.PlayerControls.Character.Shoot.performed += ctx => Shoot();
         }
 
