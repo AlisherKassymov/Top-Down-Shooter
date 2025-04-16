@@ -1457,7 +1457,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1276410461}
   m_Layer: 7
-  m_Name: Obstacles
+  m_Name: Walls
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1493,12 +1493,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1374047010}
+  - component: {fileID: 1374047014}
   - component: {fileID: 1374047011}
   - component: {fileID: 1374047016}
-  - component: {fileID: 1374047012}
-  - component: {fileID: 1374047014}
   - component: {fileID: 1374047013}
   - component: {fileID: 1374047015}
+  - component: {fileID: 1374047012}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -1537,6 +1537,7 @@ MonoBehaviour:
   _walkSpeed: 3
   _runningSpeed: 5
   _verticalVelocity: 0
+  _turnSpeed: 10
 --- !u!143 &1374047012
 CharacterController:
   m_ObjectHideFlags: 0

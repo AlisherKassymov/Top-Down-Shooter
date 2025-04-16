@@ -17,6 +17,8 @@ namespace Controls
 
         [FoldoutGroup("MovementSettings")] [SerializeField]
         private float _verticalVelocity = 0f;
+        [FoldoutGroup("MovementSettings")] [SerializeField]
+        private float _turnSpeed = 0f;
 
         private Player _player;
         private float _speed;
@@ -63,8 +65,9 @@ namespace Controls
             var lookingDirection = _player.PlayerAim.GetMousePosition() - transform.position;
             lookingDirection.y = 0f;
             lookingDirection.Normalize();
-
-            transform.forward = lookingDirection;
+            
+            Quaternion targetRotation = Quaternion.LookRotation(lookingDirection);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, _turnSpeed * Time.deltaTime);
         }
 
         private void ApplyMovement()
