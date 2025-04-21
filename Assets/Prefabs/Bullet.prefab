@@ -150,6 +150,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d86f69579e8c424e9f5092a7d928849, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _bulletLifeTime: 5
 --- !u!96 &8811381626775927313
 TrailRenderer:
   serializedVersion: 3

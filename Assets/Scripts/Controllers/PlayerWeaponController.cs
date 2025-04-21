@@ -27,9 +27,11 @@ namespace Controllers
 
         private void Shoot()
         {
-            var newBullet = Instantiate(_bulletPrefab, _gunPoint.position, Quaternion.LookRotation(_gunPoint.forward));
+            //Instantiate(_bulletPrefab, _gunPoint.position, Quaternion.LookRotation(_gunPoint.forward));
+            var newBullet = ObjectPool.Instance.GetBullet();
+            newBullet.transform.position = _gunPoint.position;
+            newBullet.transform.rotation = Quaternion.LookRotation(_gunPoint.forward);
             newBullet.GetComponent<Rigidbody>().linearVelocity = _gunPoint.forward * _bulletSpeed;
-            Destroy(newBullet, 10);
             _animator.SetTrigger(Fire);
         }
     }
