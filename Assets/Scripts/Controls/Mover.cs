@@ -23,12 +23,12 @@ namespace Controls
         private Player _player;
         private float _speed;
         private Vector3 _movementDirection;
-        private Vector2 _moveInput;
         private bool _isRunning;
-        
+
         private PlayerControls _playerControls;
         private CharacterController _characterController;
         private Animator _animator;
+        public Vector2 MoveInput { get; private set; }
 
         private void Start()
         {
@@ -62,7 +62,7 @@ namespace Controls
 
         private void ApplyRotation()
         {
-            var lookingDirection = _player.PlayerAim.GetMousePosition() - transform.position;
+            var lookingDirection = _player.PlayerAim.GetMouseHitInfo().point - transform.position;
             lookingDirection.y = 0f;
             lookingDirection.Normalize();
             
@@ -72,7 +72,7 @@ namespace Controls
 
         private void ApplyMovement()
         {
-            _movementDirection = new Vector3(_moveInput.x, 0, _moveInput.y);
+            _movementDirection = new Vector3(MoveInput.x, 0, MoveInput.y);
             ApplyGravity();
             if (_movementDirection.magnitude > 0)
             {
@@ -98,8 +98,8 @@ namespace Controls
             _playerControls = _player.PlayerControls;
 
 
-            _playerControls.Character.Movement.performed += ctx => _moveInput = ctx.ReadValue<Vector2>();
-            _playerControls.Character.Movement.canceled += ctx => _moveInput = Vector2.zero;
+            _playerControls.Character.Movement.performed += ctx => MoveInput = ctx.ReadValue<Vector2>();
+            _playerControls.Character.Movement.canceled += ctx => MoveInput = Vector2.zero;
 
 
             _playerControls.Character.Run.performed += ctx =>
