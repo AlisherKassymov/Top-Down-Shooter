@@ -11,6 +11,8 @@ namespace Controls
 
         [FoldoutGroup("Aim Settings")] 
         [SerializeField] private Transform _aim;
+
+        [SerializeField] private bool _isAiming;
         
         [FormerlySerializedAs("_aim")]
         [FoldoutGroup("Camera Settings")] 
@@ -36,9 +38,27 @@ namespace Controls
 
         private void Update()
         {
-            _aim.position = GetMouseHitInfo().point;
-            _aim.position = new Vector3(_aim.position.x, transform.position.y + 1, _aim.position.z);
+            if (Input.GetKeyDown(KeyCode.P))
+            {
+                _isAiming = !_isAiming;
+            }
+            
+            UpdateAimPosition();
+            UpdateCameraPosition();
+        }
+
+        private void UpdateCameraPosition()
+        {
             _cameraTarget.position = Vector3.Lerp(_cameraTarget.position, DesiredCameraPosition(), _cameraSensitivity * Time.deltaTime);
+        }
+
+        private void UpdateAimPosition()
+        {
+            _aim.position = GetMouseHitInfo().point;
+            if (!_isAiming)
+            {
+                _aim.position = new Vector3(_aim.position.x, transform.position.y + 1, _aim.position.z);
+            }
         }
 
         private Vector3 DesiredCameraPosition()
@@ -66,6 +86,16 @@ namespace Controls
             }
 
             return _lastKnownMouseHit;
+        }
+
+        public bool CanAim()
+        {
+            if (_isAiming)
+            {
+                return true;
+            }
+
+            return false;
         }
 
         private void AssignInputEvents()

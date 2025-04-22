@@ -42,7 +42,10 @@ namespace Controllers
         private Vector3 GetBulletDirection()
         {
             Vector3 direction = (_aim.position - _gunPoint.position).normalized;
-            direction.y = 0;
+            if (_player.PlayerAim.CanAim() == false)
+            {
+                direction.y = 0;
+            }
             _weaponHolder.LookAt(_aim);
             _gunPoint.LookAt(_aim);
             return direction;
