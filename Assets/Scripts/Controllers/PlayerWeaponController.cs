@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace Controllers
@@ -9,6 +10,9 @@ namespace Controllers
         [SerializeField] private GameObject _bulletPrefab;
         [SerializeField] private float _bulletSpeed;
         [SerializeField] private Transform _gunPoint;
+
+        [SerializeField] private Transform _weaponHolder;
+        [SerializeField] private Transform _aim;
         
         private Player _player;
         private Animator _animator;
@@ -31,8 +35,24 @@ namespace Controllers
             var newBullet = ObjectPool.Instance.GetBullet();
             newBullet.transform.position = _gunPoint.position;
             newBullet.transform.rotation = Quaternion.LookRotation(_gunPoint.forward);
-            newBullet.GetComponent<Rigidbody>().linearVelocity = _gunPoint.forward * _bulletSpeed;
+            newBullet.GetComponent<Rigidbody>().linearVelocity = GetBulletDirection() * _bulletSpeed;
             _animator.SetTrigger(Fire);
+        }
+
+        private Vector3 GetBulletDirection()
+        {
+            Vector3 direction = (_aim.position - _gunPoint.position).normalized;
+            direction.y = 0;
+            _weaponHolder.LookAt(_aim);
+            _gunPoint.LookAt(_aim);
+            return direction;
+        }
+
+        private void OnDrawGizmos()
+        {
+            Gizmos.DrawLine(_weaponHolder.position, _weaponHolder.position + _weaponHolder.forward * 25);
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawLine(_gunPoint.position, GetBulletDirection() + _gunPoint.forward * 25);
         }
     }
 }
