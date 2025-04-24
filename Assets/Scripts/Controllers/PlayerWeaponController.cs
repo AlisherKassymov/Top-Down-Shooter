@@ -39,7 +39,7 @@ namespace Controllers
             _animator.SetTrigger(Fire);
         }
 
-        private Vector3 GetBulletDirection()
+        public Vector3 GetBulletDirection()
         {
             Vector3 direction = (_aim.position - _gunPoint.position).normalized;
             if (_player.PlayerAim.CanAim() == false && _player.PlayerAim.ReturnTarget() == null)
@@ -50,5 +50,7 @@ namespace Controllers
             _gunPoint.LookAt(_aim);
             return direction;
         }
+        
+        public Transform GetGunPoint() => _gunPoint;
     }
 }
