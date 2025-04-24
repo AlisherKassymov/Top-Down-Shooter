@@ -35,7 +35,7 @@ namespace Controls
 
         private Player _player;
         private PlayerControls _playerControls;
-        private Vector3 _aimInput;
+        private Vector3 _mouseInput;
         private RaycastHit _lastKnownMouseHit;
 
         private void Start()
@@ -56,12 +56,26 @@ namespace Controls
                 _isTargetLocked = !_isTargetLocked;
             }
 
-            UpdateAimLaser();
+            UpdateAimVisuals();
             UpdateAimPosition();
             UpdateCameraPosition();
         }
 
-        private void UpdateAimLaser()
+        public Transform ReturnTarget()
+        {
+            Transform target = null;
+            if (GetMouseHitInfo().transform.GetComponent<Target>() != null)
+            {
+                target = GetMouseHitInfo().transform;
+            }
+
+            return target;
+        }
+
+        public Transform GetAim() => _aim;
+        
+
+        private void UpdateAimVisuals()
         {
             var laserDirection = _player.PlayerWeaponController.GetBulletDirection();
             var gunPoint = _player.PlayerWeaponController.GetGunPoint();
@@ -82,23 +96,6 @@ namespace Controls
             _aimLaser.SetPosition(2, endPoint + laserDirection * laserLipLength);
         }
 
-        public Transform ReturnTarget()
-        {
-            Transform target = null;
-            if (GetMouseHitInfo().transform.GetComponent<Target>() != null)
-            {
-                target = GetMouseHitInfo().transform;
-            }
-
-            return target;
-        }
-
-        private void UpdateCameraPosition()
-        {
-            _cameraTarget.position = Vector3.Lerp(_cameraTarget.position, DesiredCameraPosition(),
-                _cameraSensitivity * Time.deltaTime);
-        }
-
         private void UpdateAimPosition()
         {
             Transform target = ReturnTarget();
@@ -114,26 +111,11 @@ namespace Controls
                 _aim.position = new Vector3(_aim.position.x, transform.position.y + 1, _aim.position.z);
             }
         }
-
-        private Vector3 DesiredCameraPosition()
-        {
-            float actualMaxCameraDistance = _player.Mover.MoveInput.y < -0.5f ? _minCameraDistance : _maxCameraDistance;
-
-            Vector3 desiredCameraPosition = GetMouseHitInfo().point;
-            Vector3 aimDirection = (desiredCameraPosition - transform.position).normalized;
-
-            float distanceToDesiredPosition = Vector3.Distance(transform.position, desiredCameraPosition);
-            float clampedDistance = Math.Clamp(distanceToDesiredPosition, _minCameraDistance, actualMaxCameraDistance);
-
-            desiredCameraPosition = transform.position + aimDirection * clampedDistance;
-            desiredCameraPosition.y = transform.position.y + 1;
-
-            return desiredCameraPosition;
-        }
+        
 
         public RaycastHit GetMouseHitInfo()
         {
-            Ray ray = Camera.main.ScreenPointToRay(_aimInput);
+            Ray ray = Camera.main.ScreenPointToRay(_mouseInput);
             if (Physics.Raycast(ray, out var hitInfo, Mathf.Infinity, _aimLayerMask))
             {
                 _lastKnownMouseHit = hitInfo;
@@ -153,12 +135,38 @@ namespace Controls
             return false;
         }
 
+        #region Camera region
+
+        private Vector3 DesiredCameraPosition()
+        {
+            float actualMaxCameraDistance = _player.Mover.MoveInput.y < -0.5f ? _minCameraDistance : _maxCameraDistance;
+
+            Vector3 desiredCameraPosition = GetMouseHitInfo().point;
+            Vector3 aimDirection = (desiredCameraPosition - transform.position).normalized;
+
+            float distanceToDesiredPosition = Vector3.Distance(transform.position, desiredCameraPosition);
+            float clampedDistance = Math.Clamp(distanceToDesiredPosition, _minCameraDistance, actualMaxCameraDistance);
+
+            desiredCameraPosition = transform.position + aimDirection * clampedDistance;
+            desiredCameraPosition.y = transform.position.y + 1;
+
+            return desiredCameraPosition;
+        }
+
+        private void UpdateCameraPosition()
+        {
+            _cameraTarget.position = Vector3.Lerp(_cameraTarget.position, DesiredCameraPosition(),
+                _cameraSensitivity * Time.deltaTime);
+        }
+
+        #endregion
+
         private void AssignInputEvents()
         {
             _playerControls = _player.PlayerControls;
 
-            _playerControls.Character.Aim.performed += ctx => _aimInput = ctx.ReadValue<Vector2>();
-            _playerControls.Character.Aim.canceled += ctx => _aimInput = Vector2.zero;
+            _playerControls.Character.Aim.performed += ctx => _mouseInput = ctx.ReadValue<Vector2>();
+            _playerControls.Character.Aim.canceled += ctx => _mouseInput = Vector2.zero;
         }
     }
 }

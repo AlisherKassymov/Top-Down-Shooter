@@ -12,7 +12,6 @@ namespace Controllers
         [SerializeField] private Transform _gunPoint;
 
         [SerializeField] private Transform _weaponHolder;
-        [SerializeField] private Transform _aim;
         
         private Player _player;
         private Animator _animator;
@@ -41,13 +40,14 @@ namespace Controllers
 
         public Vector3 GetBulletDirection()
         {
-            Vector3 direction = (_aim.position - _gunPoint.position).normalized;
+            Transform aim = _player.PlayerAim.GetAim();
+            Vector3 direction = (aim.position - _gunPoint.position).normalized;
             if (_player.PlayerAim.CanAim() == false && _player.PlayerAim.ReturnTarget() == null)
             {
                 direction.y = 0;
             }
-            _weaponHolder.LookAt(_aim);
-            _gunPoint.LookAt(_aim);
+            /*_weaponHolder.LookAt(_aim);
+            _gunPoint.LookAt(_aim); TODO: Find a better place; Refactor*/ 
             return direction;
         }
         
