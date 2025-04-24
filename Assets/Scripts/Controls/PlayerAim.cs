@@ -13,6 +13,7 @@ namespace Controls
         [SerializeField] private Transform _aim;
 
         [SerializeField] private bool _isAiming;
+        [SerializeField] private bool _isTargetLocked;
         
         [FormerlySerializedAs("_aim")]
         [FoldoutGroup("Camera Settings")] 
@@ -42,9 +43,24 @@ namespace Controls
             {
                 _isAiming = !_isAiming;
             }
-            
+
+            if (Input.GetKeyDown(KeyCode.L))
+            {
+                _isTargetLocked = !_isTargetLocked;
+            }
             UpdateAimPosition();
             UpdateCameraPosition();
+        }
+        
+        public Transform ReturnTarget()
+        {
+            Transform target = null;
+            if (GetMouseHitInfo().transform.GetComponent<Target>() != null)
+            {
+                target = GetMouseHitInfo().transform;
+            }
+
+            return target;
         }
 
         private void UpdateCameraPosition()
@@ -54,13 +70,19 @@ namespace Controls
 
         private void UpdateAimPosition()
         {
+            Transform target = ReturnTarget();
+            if (target != null && _isTargetLocked)
+            {
+                _aim.position = target.position;
+                return;
+            }
             _aim.position = GetMouseHitInfo().point;
             if (!_isAiming)
             {
                 _aim.position = new Vector3(_aim.position.x, transform.position.y + 1, _aim.position.z);
             }
         }
-
+        
         private Vector3 DesiredCameraPosition()
         {
             float actualMaxCameraDistance = _player.Mover.MoveInput.y < -0.5f ? _minCameraDistance : _maxCameraDistance;

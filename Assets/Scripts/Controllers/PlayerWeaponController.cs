@@ -42,20 +42,13 @@ namespace Controllers
         private Vector3 GetBulletDirection()
         {
             Vector3 direction = (_aim.position - _gunPoint.position).normalized;
-            if (_player.PlayerAim.CanAim() == false)
+            if (_player.PlayerAim.CanAim() == false && _player.PlayerAim.ReturnTarget() == null)
             {
                 direction.y = 0;
             }
             _weaponHolder.LookAt(_aim);
             _gunPoint.LookAt(_aim);
             return direction;
-        }
-
-        private void OnDrawGizmos()
-        {
-            Gizmos.DrawLine(_weaponHolder.position, _weaponHolder.position + _weaponHolder.forward * 25);
-            Gizmos.color = Color.yellow;
-            Gizmos.DrawLine(_gunPoint.position, GetBulletDirection() + _gunPoint.forward * 25);
         }
     }
 }
