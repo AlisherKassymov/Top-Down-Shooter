@@ -1942,7 +1942,6 @@ MonoBehaviour:
   _bulletSpeed: 20
   _gunPoint: {fileID: 2116581132}
   _weaponHolder: {fileID: 2087027425}
-  _aim: {fileID: 1524252010}
 --- !u!114 &1374047014
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1998,7 +1997,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 2240
   _aimLaser: {fileID: 2087027426}
-  _tipLength: 0.5
   _aim: {fileID: 1524252010}
   _isAiming: 0
   _isTargetLocked: 1
@@ -2196,7 +2194,7 @@ SphereCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
@@ -2207,7 +2205,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1524252006}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
