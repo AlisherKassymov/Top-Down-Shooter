@@ -73,7 +73,7 @@ namespace Controls
         }
 
         public Transform GetAim() => _aim;
-        
+
 
         private void UpdateAimVisuals()
         {
@@ -101,7 +101,9 @@ namespace Controls
             Transform target = ReturnTarget();
             if (target != null && _isTargetLocked)
             {
-                _aim.position = target.position;
+                _aim.position = target.GetComponent<Renderer>() != null
+                    ? target.GetComponent<Renderer>().bounds.center
+                    : target.position;
                 return;
             }
 
@@ -111,7 +113,7 @@ namespace Controls
                 _aim.position = new Vector3(_aim.position.x, transform.position.y + 1, _aim.position.z);
             }
         }
-        
+
 
         public RaycastHit GetMouseHitInfo()
         {
