@@ -1,4 +1,5 @@
 using System;
+using System.Text.RegularExpressions;
 using UnityEngine;
 
 namespace Controllers
@@ -6,11 +7,11 @@ namespace Controllers
     public class PlayerWeaponController : MonoBehaviour
     {
         private static readonly int Fire = Animator.StringToHash("Shoot");
+        private const float REFERENCE_BULLET_SPEED = 20;
 
         [SerializeField] private GameObject _bulletPrefab;
         [SerializeField] private float _bulletSpeed;
         [SerializeField] private Transform _gunPoint;
-
         [SerializeField] private Transform _weaponHolder;
         
         private Player _player;
@@ -32,9 +33,11 @@ namespace Controllers
         {
             //Instantiate(_bulletPrefab, _gunPoint.position, Quaternion.LookRotation(_gunPoint.forward));
             var newBullet = ObjectPool.Instance.GetBullet();
+            Rigidbody rbNewBullet = newBullet.GetComponent<Rigidbody>();
             newBullet.transform.position = _gunPoint.position;
             newBullet.transform.rotation = Quaternion.LookRotation(_gunPoint.forward);
-            newBullet.GetComponent<Rigidbody>().linearVelocity = GetBulletDirection() * _bulletSpeed;
+            rbNewBullet.mass = REFERENCE_BULLET_SPEED / _bulletSpeed;
+            rbNewBullet.linearVelocity = GetBulletDirection() * _bulletSpeed;
             _animator.SetTrigger(Fire);
         }
 
