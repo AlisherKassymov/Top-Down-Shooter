@@ -151,6 +151,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _bulletLifeTime: 5
+  _bulletImpactFX: {fileID: 3106865561147682028, guid: af5dd2b79b3f2e347a09279908a2cfa1, type: 3}
 --- !u!96 &8811381626775927313
 TrailRenderer:
   serializedVersion: 3
