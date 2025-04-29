@@ -24,6 +24,9 @@ namespace Controllers
 
         [FoldoutGroup("Inventory")] [SerializeField]
         private List<Weapon> _weaponSlots;
+
+        [FoldoutGroup("Inventory")]
+        private int _maxSlots = 2;
         
         private Player _player;
         private Animator _animator;
@@ -80,6 +83,16 @@ namespace Controllers
             _currentWeapon = _weaponSlots[0];
         }
 
+        public void PickUpWeapon(Weapon newWeapon)
+        {
+            if (_weaponSlots.Count >= _maxSlots)
+            {
+                Debug.Log("No slots available");
+                return;
+            }
+
+            _weaponSlots.Add(newWeapon);
+        }
         public Vector3 GetBulletDirection()
         {
             Transform aim = _player.PlayerAim.GetAim();
