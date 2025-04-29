@@ -1,11 +1,60 @@
 using System;
+using UnityEngine.Serialization;
 
 [Serializable]
 public class Weapon
 {
     public WeaponType WeaponType;
-    public int Ammo;
-    public int MaxAmmo;
+    [FormerlySerializedAs("Ammo")] public int BulletsInMagazine;
+    public int MagazineCapacity;
+    [FormerlySerializedAs("MaxAmmo")] public int TotalReservedAmmo;
+
+    public bool CanShoot()
+    {
+        return HaveEnoughBullets();
+    }
+
+    private bool HaveEnoughBullets()
+    {
+        if (BulletsInMagazine > 0)
+        {
+            BulletsInMagazine--;
+            return true;
+        }
+
+        return false;
+    }
+
+    public bool CanReload()
+    {
+        if (BulletsInMagazine == MagazineCapacity)
+        {
+            return false;
+        }
+        if (TotalReservedAmmo > 0)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    public void ReloadMagazine()
+    {
+        int bulletsToReload = MagazineCapacity - BulletsInMagazine;
+        if (bulletsToReload > TotalReservedAmmo)
+        {
+            bulletsToReload = TotalReservedAmmo;
+        }
+
+        TotalReservedAmmo -= bulletsToReload;
+        BulletsInMagazine += bulletsToReload;
+
+        if (TotalReservedAmmo < 0)
+        {
+            TotalReservedAmmo = 0;
+        }
+    }
 }
 
 public enum WeaponType

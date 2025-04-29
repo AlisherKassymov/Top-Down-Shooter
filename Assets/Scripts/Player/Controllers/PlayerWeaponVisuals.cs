@@ -45,15 +45,20 @@ namespace Controllers
         private void Update()
         {
             CheckWeaponSwitch();
-            if (Input.GetKeyDown(KeyCode.R) && _busyGrabbingWeapon == false)
-            {
-                _animator.SetTrigger(Reload);
-                ReduceRigWeight();
-            }
             
             UpdateRigWeight();
 
             UpdateLeftHandIKWeight();
+        }
+
+        public void PlayReloadAnimation()
+        {
+            if (_busyGrabbingWeapon)
+            {
+                return;
+            }
+            _animator.SetTrigger(Reload);
+            ReduceRigWeight();
         }
 
         private void UpdateLeftHandIKWeight()
