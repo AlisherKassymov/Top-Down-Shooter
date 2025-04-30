@@ -59,6 +59,8 @@ namespace Controllers
         private void EquipWeapon(int index)
         {
             _currentWeapon = _weaponSlots[index];
+            _player.PlayerWeaponVisuals.SwitchOffWeaponModels();
+            _player.PlayerWeaponVisuals.PlayWeaponEquipAnimation();
         }
 
         private void DropWeapon()
