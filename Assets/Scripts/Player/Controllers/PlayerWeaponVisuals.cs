@@ -14,6 +14,7 @@ namespace Controllers
 
 
         [SerializeField] private WeaponModel[] _weaponModels;
+        [SerializeField] private BackupWeaponModel[] _backupWeapons;
 
         [Header("Left Hand IK")] [SerializeField]
         private TwoBoneIKConstraint _leftHandIK;
@@ -44,6 +45,7 @@ namespace Controllers
             _rig = GetComponentInChildren<Rig>();
 
             _weaponModels = GetComponentsInChildren<WeaponModel>(true);
+            _backupWeapons = GetComponentsInChildren<BackupWeaponModel>(true);
         }
 
         private void Update()
@@ -99,6 +101,14 @@ namespace Controllers
         {
             int animationIndex = (int) ReturnCurrenWeaponModel().HoldType;
 
+            SwitchOffWeaponModels();
+            
+            SwitchOffBackUpWeaponModels();
+
+            if (_player.PlayerWeaponController.HasOnlyOneWeapon() == false)
+            {
+                SwitchOnBackUpWeaponModel();
+            }
             SwitchAnimationLayer(animationIndex);
             ReturnCurrenWeaponModel().gameObject.SetActive(true);
             AttachLeftHand();
@@ -109,6 +119,26 @@ namespace Controllers
             foreach (var t in _weaponModels)
             {
                 t.gameObject.SetActive(false);
+            }
+        }
+
+        private void SwitchOffBackUpWeaponModels()
+        {
+            foreach (var weapon in _backupWeapons)
+            {
+                weapon.gameObject.SetActive(false);
+            }
+        }
+
+        public void SwitchOnBackUpWeaponModel()
+        {
+            var weaponType = _player.PlayerWeaponController.BackupWeapon().WeaponType;
+            foreach (var backupWeapon in _backupWeapons)
+            {
+                if (backupWeapon.WeaponType == weaponType)
+                {
+                    backupWeapon.gameObject.SetActive(true);
+                }
             }
         }
 

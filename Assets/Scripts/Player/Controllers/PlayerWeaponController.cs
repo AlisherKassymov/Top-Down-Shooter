@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -59,18 +60,17 @@ namespace Controllers
         private void EquipWeapon(int index)
         {
             _currentWeapon = _weaponSlots[index];
-            _player.PlayerWeaponVisuals.SwitchOffWeaponModels();
             _player.PlayerWeaponVisuals.PlayWeaponEquipAnimation();
         }
 
         private void DropWeapon()
         {
-            if (_weaponSlots.Count <= 1)
+            if (HasOnlyOneWeapon())
             {
                 return;
             }
             _weaponSlots.Remove(_currentWeapon);
-            _currentWeapon = _weaponSlots[0];
+            EquipWeapon(0);
         }
 
         public void PickUpWeapon(Weapon newWeapon)
@@ -80,9 +80,11 @@ namespace Controllers
                 Debug.Log("No slots available");
                 return;
             }
-
             _weaponSlots.Add(newWeapon);
+            _player.PlayerWeaponVisuals.SwitchOnBackUpWeaponModel();
         }
+        
+        public bool HasOnlyOneWeapon() => _weaponSlots.Count <= 1;
         public Vector3 GetBulletDirection()
         {
             Transform aim = _player.PlayerAim.GetAim();
@@ -115,6 +117,11 @@ namespace Controllers
         }
 
         public Weapon CurrenWeapon() => _currentWeapon;
+
+        public Weapon BackupWeapon()
+        {
+            return _weaponSlots.FirstOrDefault(weapon => weapon != _currentWeapon);
+        }
         public Transform GetGunPoint() => _gunPoint;
     }
 }
