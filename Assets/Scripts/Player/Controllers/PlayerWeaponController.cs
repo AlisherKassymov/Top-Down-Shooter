@@ -36,8 +36,8 @@ namespace Controllers
         {
             _animator = GetComponentInChildren<Animator>();
             _player = GetComponent<Player>();
-            _currentWeapon.BulletsInMagazine = _currentWeapon.TotalReservedAmmo;
             AssignInputEvents();
+            Invoke("EquipStartingWeapon", 1f);
         }
         
 
@@ -61,6 +61,11 @@ namespace Controllers
         {
             _currentWeapon = _weaponSlots[index];
             _player.PlayerWeaponVisuals.PlayWeaponEquipAnimation();
+        }
+
+        private void EquipStartingWeapon()
+        {
+            EquipWeapon(0);
         }
 
         private void DropWeapon()

@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 using UnityEngine.Serialization;
 
 [Serializable]
@@ -8,6 +9,11 @@ public class Weapon
     [FormerlySerializedAs("Ammo")] public int BulletsInMagazine;
     public int MagazineCapacity;
     [FormerlySerializedAs("MaxAmmo")] public int TotalReservedAmmo;
+
+    [Range(1, 2)]
+    public float ReloadSpeed = 1;
+    [Range(1,2)]
+    public float EquipSpeed = 1;
 
     public bool CanShoot()
     {

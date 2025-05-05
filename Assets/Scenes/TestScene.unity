@@ -990,6 +990,8 @@ MonoBehaviour:
     BulletsInMagazine: 40
     MagazineCapacity: 0
     TotalReservedAmmo: 40
+    ReloadSpeed: 1
+    EquipSpeed: 1
 --- !u!65 &158150396
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4324,16 +4326,22 @@ MonoBehaviour:
     BulletsInMagazine: 0
     MagazineCapacity: 15
     TotalReservedAmmo: 33
-  - WeaponType: 4
+    ReloadSpeed: 1
+    EquipSpeed: 1
+  - WeaponType: 2
     BulletsInMagazine: 6
-    MagazineCapacity: 0
+    MagazineCapacity: 30
     TotalReservedAmmo: 6
+    ReloadSpeed: 1
+    EquipSpeed: 1
   _weaponHolder: {fileID: 2087027425}
   _currentWeapon:
-    WeaponType: 0
+    WeaponType: 1
     BulletsInMagazine: 0
     MagazineCapacity: 0
     TotalReservedAmmo: 10
+    ReloadSpeed: 1
+    EquipSpeed: 1
 --- !u!114 &1374047014
 MonoBehaviour:
   m_ObjectHideFlags: 0

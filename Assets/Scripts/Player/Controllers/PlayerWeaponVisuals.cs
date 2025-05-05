@@ -11,6 +11,8 @@ namespace Controllers
         private static readonly int WeaponGrabType = Animator.StringToHash("WeaponGrabType");
         private static readonly int WeaponGrab = Animator.StringToHash("WeaponGrab");
         private static readonly int BusyGrabbingWeapon = Animator.StringToHash("BusyGrabbingWeapon");
+        private static readonly int EquipSpeed = Animator.StringToHash("EquipSpeed");
+        private static readonly int ReloadSpeed = Animator.StringToHash("ReloadSpeed");
 
 
         [SerializeField] private WeaponModel[] _weaponModels;
@@ -53,6 +55,7 @@ namespace Controllers
             UpdateRigWeight();
             UpdateLeftHandIKWeight();
         }
+        
 
         public WeaponModel ReturnCurrenWeaponModel()
         {
@@ -71,11 +74,13 @@ namespace Controllers
 
         public void PlayReloadAnimation()
         {
+            float reloadSpeed = _player.PlayerWeaponController.CurrenWeapon().ReloadSpeed;
             if (_busyGrabbingWeapon)
             {
                 return;
             }
 
+            _animator.SetFloat(ReloadSpeed, reloadSpeed);
             _animator.SetTrigger(Reload);
             ReduceRigWeight();
         }
@@ -83,11 +88,14 @@ namespace Controllers
         public void PlayWeaponEquipAnimation()
         {
             GrabType grabType = ReturnCurrenWeaponModel().GrabType;
+
+            float equipmentSpeed = _player.PlayerWeaponController.CurrenWeapon().EquipSpeed;
+            
             _leftHandIK.weight = 0;
             ReduceRigWeight();
-            _animator.SetFloat(WeaponGrabType, (float) grabType);
             _animator.SetTrigger(WeaponGrab);
-
+            _animator.SetFloat(WeaponGrabType, (float) grabType);
+            _animator.SetFloat(EquipSpeed, equipmentSpeed);
             SetBusyGrabbingWeaponTo(true);
         }
 
