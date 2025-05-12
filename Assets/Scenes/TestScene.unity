@@ -992,6 +992,7 @@ MonoBehaviour:
     TotalReservedAmmo: 40
     ReloadSpeed: 1
     EquipSpeed: 1
+    FireRate: 1
 --- !u!65 &158150396
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4323,17 +4324,19 @@ MonoBehaviour:
   _gunPoint: {fileID: 2116581132}
   _weaponSlots:
   - WeaponType: 0
-    BulletsInMagazine: 0
-    MagazineCapacity: 15
+    BulletsInMagazine: 10
+    MagazineCapacity: 56
     TotalReservedAmmo: 33
     ReloadSpeed: 1
     EquipSpeed: 1
+    FireRate: 1
   - WeaponType: 2
     BulletsInMagazine: 6
-    MagazineCapacity: 30
+    MagazineCapacity: 66
     TotalReservedAmmo: 6
     ReloadSpeed: 1
     EquipSpeed: 1
+    FireRate: 6.31
   _weaponHolder: {fileID: 2087027425}
   _currentWeapon:
     WeaponType: 1
@@ -4342,6 +4345,7 @@ MonoBehaviour:
     TotalReservedAmmo: 10
     ReloadSpeed: 1
     EquipSpeed: 1
+    FireRate: 1
 --- !u!114 &1374047014
 MonoBehaviour:
   m_ObjectHideFlags: 0

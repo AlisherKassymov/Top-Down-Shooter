@@ -1,4 +1,5 @@
 using System;
+using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -15,21 +16,33 @@ public class Weapon
     [Range(1,2)]
     public float EquipSpeed = 1;
 
+    [Space]
+    public float FireRate = 1;
+
+    private float _lastShootTime;
     public bool CanShoot()
     {
-        return HaveEnoughBullets();
-    }
-
-    private bool HaveEnoughBullets()
-    {
-        if (BulletsInMagazine > 0)
+        if (HaveEnoughBullets() && IsReadyToShoot())
         {
             BulletsInMagazine--;
             return true;
         }
-
         return false;
     }
+
+    private bool IsReadyToShoot()
+    {
+        if (Time.time > _lastShootTime + 1 / FireRate)
+        {
+            _lastShootTime = Time.time;
+            return true;
+        }
+        return false;
+    }
+    
+    #region Reload Methods
+
+    private bool HaveEnoughBullets() => BulletsInMagazine > 0;
 
     public bool CanReload()
     {
@@ -61,6 +74,8 @@ public class Weapon
             TotalReservedAmmo = 0;
         }
     }
+
+    #endregion
 }
 
 public enum WeaponType
