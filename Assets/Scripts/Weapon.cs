@@ -1,4 +1,5 @@
 using System;
+using Sirenix.OdinInspector;
 using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -7,19 +8,27 @@ using UnityEngine.Serialization;
 public class Weapon
 {
     public WeaponType WeaponType;
-    [FormerlySerializedAs("Ammo")] public int BulletsInMagazine;
-    public int MagazineCapacity;
-    [FormerlySerializedAs("MaxAmmo")] public int TotalReservedAmmo;
 
-    [Range(1, 2)]
+    [FoldoutGroup("Magazine Details")] [FormerlySerializedAs("Ammo")]
+    public int BulletsInMagazine;
+
+    [FoldoutGroup("Magazine Details")] public int MagazineCapacity;
+
+    [FoldoutGroup("Magazine Details")] [FormerlySerializedAs("MaxAmmo")]
+    public int TotalReservedAmmo;
+
+    [Space] [Range(1, 2)] [FoldoutGroup("Speed Settings")]
     public float ReloadSpeed = 1;
-    [Range(1,2)]
+
+    [Range(1, 2)] [FoldoutGroup("Speed Settings")]
     public float EquipSpeed = 1;
 
-    [Space]
-    public float FireRate = 1;
-
+    [Space] [FoldoutGroup("Shooting settings")]
     private float _lastShootTime;
+
+    [FoldoutGroup("Shooting settings")] public float FireRate = 1;
+    [FoldoutGroup("Shooting settings")] public ShootingMode ShootingMode;
+
     public bool CanShoot()
     {
         if (HaveEnoughBullets() && IsReadyToShoot())
@@ -27,6 +36,7 @@ public class Weapon
             BulletsInMagazine--;
             return true;
         }
+
         return false;
     }
 
@@ -37,9 +47,10 @@ public class Weapon
             _lastShootTime = Time.time;
             return true;
         }
+
         return false;
     }
-    
+
     #region Reload Methods
 
     private bool HaveEnoughBullets() => BulletsInMagazine > 0;
@@ -50,6 +61,7 @@ public class Weapon
         {
             return false;
         }
+
         if (TotalReservedAmmo > 0)
         {
             return true;
@@ -85,4 +97,10 @@ public enum WeaponType
     AutoRifle,
     Shotgun,
     Rifle
+}
+
+public enum ShootingMode
+{
+    Single,
+    Auto
 }

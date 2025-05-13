@@ -29,6 +29,7 @@ namespace Controllers
         
         private Player _player;
         private bool _isWeaponReady;
+        private bool _isShooting;
     
         private void Start()
         {
@@ -36,7 +37,14 @@ namespace Controllers
             AssignInputEvents();
             Invoke("EquipStartingWeapon", 1f);
         }
-        
+
+        private void Update()
+        {
+            if (_isShooting)
+            {
+                Shoot();
+            }
+        }
 
         private void Shoot()
         {
@@ -48,6 +56,12 @@ namespace Controllers
             {
                 return;
             }
+
+            if (_currentWeapon.ShootingMode == ShootingMode.Single)
+            {
+                _isShooting = false;
+            }
+            
             //Instantiate(_bulletPrefab, _gunPoint.position, Quaternion.LookRotation(_gunPoint.forward));
             var newBullet = ObjectPool.Instance.GetBullet();
             Rigidbody rbNewBullet = newBullet.GetComponent<Rigidbody>();
@@ -113,7 +127,8 @@ namespace Controllers
         {
             PlayerControls playerControls = _player.PlayerControls;
             
-            playerControls.Character.Shoot.performed += ctx => Shoot();
+            playerControls.Character.Shoot.performed += ctx => _isShooting = true;
+            playerControls.Character.Shoot.canceled += ctx => _isShooting = false;
             
             playerControls.Character.EquipSlot1.performed += ctx => EquipWeapon(0);
             playerControls.Character.EquipSlot2.performed += ctx => EquipWeapon(1);

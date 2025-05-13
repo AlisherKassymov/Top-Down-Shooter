@@ -993,6 +993,7 @@ MonoBehaviour:
     ReloadSpeed: 1
     EquipSpeed: 1
     FireRate: 1
+    ShootingMode: 0
 --- !u!65 &158150396
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4329,6 +4330,7 @@ MonoBehaviour:
     ReloadSpeed: 1
     EquipSpeed: 1
     FireRate: 1
+    ShootingMode: 0
   - WeaponType: 2
     BulletsInMagazine: 6
     MagazineCapacity: 66
@@ -4336,6 +4338,7 @@ MonoBehaviour:
     ReloadSpeed: 1
     EquipSpeed: 1
     FireRate: 6.31
+    ShootingMode: 1
   _weaponHolder: {fileID: 2087027425}
   _currentWeapon:
     WeaponType: 1
@@ -4345,6 +4348,7 @@ MonoBehaviour:
     ReloadSpeed: 1
     EquipSpeed: 1
     FireRate: 1
+    ShootingMode: 0
 --- !u!114 &1374047014
 MonoBehaviour:
   m_ObjectHideFlags: 0
