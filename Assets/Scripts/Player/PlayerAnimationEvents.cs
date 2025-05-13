@@ -17,6 +17,7 @@ public class PlayerAnimationEvents : MonoBehaviour
     {
         _playerWeaponVisuals.MaximizeRigWeight();
         _playerWeaponController.CurrenWeapon().ReloadMagazine();
+        _playerWeaponController.SetWeaponReady(true);
     }
 
     public void ReturnRig()
@@ -26,7 +27,7 @@ public class PlayerAnimationEvents : MonoBehaviour
     }
     public void CompleteWeaponGrab()
     {
-        _playerWeaponVisuals.SetBusyGrabbingWeaponTo(false);
+        _playerWeaponController.SetWeaponReady(true);
     }
 
     public void SwitchOnWeaponModel() => _playerWeaponVisuals.SwitchOnCurrentWeaponModel();

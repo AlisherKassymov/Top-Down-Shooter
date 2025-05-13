@@ -10,14 +10,12 @@ namespace Controllers
     public class PlayerWeaponController : MonoBehaviour
     {
         private static readonly int Fire = Animator.StringToHash("Shoot");
-        private const float REFERENCE_BULLET_SPEED = 20;
+        private const float REFERENCE_BULLET_SPEED = 20;// This is to prevent objects to move too fast if the speed of a bullet is too high
 
         [FoldoutGroup("Bullet Settings")]
         [SerializeField] private GameObject _bulletPrefab;
         [FoldoutGroup("Bullet Settings")]
         [SerializeField] private float _bulletSpeed;
-        [FoldoutGroup("Bullet Settings")]
-        [SerializeField] private Transform _gunPoint;
 
         [FoldoutGroup("Inventory")] [SerializeField]
         private List<Weapon> _weaponSlots;
@@ -30,11 +28,10 @@ namespace Controllers
         [SerializeField] private Weapon _currentWeapon;
         
         private Player _player;
-        private Animator _animator;
+        private bool _isWeaponReady;
     
         private void Start()
         {
-            _animator = GetComponentInChildren<Animator>();
             _player = GetComponent<Player>();
             AssignInputEvents();
             Invoke("EquipStartingWeapon", 1f);
@@ -43,6 +40,10 @@ namespace Controllers
 
         private void Shoot()
         {
+            if (IsWeaponReady() == false)
+            {
+                return;
+            }
             if (_currentWeapon.CanShoot() == false)
             {
                 return;
@@ -50,15 +51,16 @@ namespace Controllers
             //Instantiate(_bulletPrefab, _gunPoint.position, Quaternion.LookRotation(_gunPoint.forward));
             var newBullet = ObjectPool.Instance.GetBullet();
             Rigidbody rbNewBullet = newBullet.GetComponent<Rigidbody>();
-            newBullet.transform.position = _gunPoint.position;
-            newBullet.transform.rotation = Quaternion.LookRotation(_gunPoint.forward);
+            newBullet.transform.position = GetGunPoint().position;
+            newBullet.transform.rotation = Quaternion.LookRotation(GetGunPoint().forward);
             rbNewBullet.mass = REFERENCE_BULLET_SPEED / _bulletSpeed;
             rbNewBullet.linearVelocity = GetBulletDirection() * _bulletSpeed;
-            _animator.SetTrigger(Fire);
+            _player.PlayerWeaponVisuals.PlayFireAnimation();
         }
 
         private void EquipWeapon(int index)
         {
+            SetWeaponReady(false);
             _currentWeapon = _weaponSlots[index];
             _player.PlayerWeaponVisuals.PlayWeaponEquipAnimation();
         }
@@ -78,6 +80,11 @@ namespace Controllers
             EquipWeapon(0);
         }
 
+        public void SetWeaponReady(bool isReady)
+        {
+            _isWeaponReady = isReady;
+        }
+        public bool IsWeaponReady() => _isWeaponReady;
         public void PickUpWeapon(Weapon newWeapon)
         {
             if (_weaponSlots.Count >= _maxSlots)
@@ -93,13 +100,12 @@ namespace Controllers
         public Vector3 GetBulletDirection()
         {
             Transform aim = _player.PlayerAim.GetAim();
-            Vector3 direction = (aim.position - _gunPoint.position).normalized;
+            Vector3 direction = (aim.position - GetGunPoint().position).normalized;
             if (_player.PlayerAim.CanAim() == false && _player.PlayerAim.ReturnTarget() == null)
             {
                 direction.y = 0;
             }
-            /*_weaponHolder.LookAt(_aim);
-            _gunPoint.LookAt(_aim); TODO: Find a better place; Refactor*/ 
+           
             return direction;
         }
         
@@ -114,11 +120,17 @@ namespace Controllers
             playerControls.Character.DropCurrentWeapon.performed += ctx => DropWeapon();
             playerControls.Character.Reload.performed += ctx =>
             {
-                if (_currentWeapon.CanReload())
+                if (_currentWeapon.CanReload() && _isWeaponReady)
                 {
-                    _player.PlayerWeaponVisuals.PlayReloadAnimation();
+                    Reload();
                 }
             };
+        }
+
+        private void Reload()
+        {
+            SetWeaponReady(false);
+            _player.PlayerWeaponVisuals.PlayReloadAnimation();
         }
 
         public Weapon CurrenWeapon() => _currentWeapon;
@@ -127,6 +139,6 @@ namespace Controllers
         {
             return _weaponSlots.FirstOrDefault(weapon => weapon != _currentWeapon);
         }
-        public Transform GetGunPoint() => _gunPoint;
+        public Transform GetGunPoint() => _player.PlayerWeaponVisuals.ReturnCurrenWeaponModel().GunPoint;
     }
 }

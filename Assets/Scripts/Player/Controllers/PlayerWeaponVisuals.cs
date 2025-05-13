@@ -13,6 +13,7 @@ namespace Controllers
         private static readonly int BusyGrabbingWeapon = Animator.StringToHash("BusyGrabbingWeapon");
         private static readonly int EquipSpeed = Animator.StringToHash("EquipSpeed");
         private static readonly int ReloadSpeed = Animator.StringToHash("ReloadSpeed");
+        private static readonly int Fire = Animator.StringToHash("Fire");
 
 
         [SerializeField] private WeaponModel[] _weaponModels;
@@ -36,7 +37,6 @@ namespace Controllers
         private Rig _rig;
 
         private Animator _animator;
-        private bool _busyGrabbingWeapon;
         private Player _player;
 
 
@@ -55,8 +55,9 @@ namespace Controllers
             UpdateRigWeight();
             UpdateLeftHandIKWeight();
         }
-        
 
+
+        public void PlayFireAnimation() => _animator.SetTrigger(Fire);
         public WeaponModel ReturnCurrenWeaponModel()
         {
             WeaponModel weaponModel = null;
@@ -75,11 +76,7 @@ namespace Controllers
         public void PlayReloadAnimation()
         {
             float reloadSpeed = _player.PlayerWeaponController.CurrenWeapon().ReloadSpeed;
-            if (_busyGrabbingWeapon)
-            {
-                return;
-            }
-
+            
             _animator.SetFloat(ReloadSpeed, reloadSpeed);
             _animator.SetTrigger(Reload);
             ReduceRigWeight();
@@ -96,15 +93,8 @@ namespace Controllers
             _animator.SetTrigger(WeaponGrab);
             _animator.SetFloat(WeaponGrabType, (float) grabType);
             _animator.SetFloat(EquipSpeed, equipmentSpeed);
-            SetBusyGrabbingWeaponTo(true);
         }
-
-        public void SetBusyGrabbingWeaponTo(bool isBusyGrabbingWeapon)
-        {
-            _busyGrabbingWeapon = isBusyGrabbingWeapon;
-            _animator.SetBool(BusyGrabbingWeapon, _busyGrabbingWeapon);
-        }
-
+        
         public void SwitchOnCurrentWeaponModel()
         {
             int animationIndex = (int) ReturnCurrenWeaponModel().HoldType;
