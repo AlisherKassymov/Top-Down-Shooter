@@ -992,8 +992,19 @@ MonoBehaviour:
     TotalReservedAmmo: 40
     ReloadSpeed: 1
     EquipSpeed: 1
+    IsBurstAvailable: 0
+    IsBurstActive: 0
+    BurstFireDelay: 0
+    BurstModeBulletsPerShot: 0
+    BurstModeFireRate: 0
     FireRate: 1
+    DefaultFireRate: 0
     ShootingMode: 0
+    BulletsPerShot: 0
+    BaseSpread: 0
+    CurrentSpread: 2
+    MaxSpread: 3
+    spreadIncreaseRate: 0.15
 --- !u!65 &158150396
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4329,16 +4340,38 @@ MonoBehaviour:
     TotalReservedAmmo: 117
     ReloadSpeed: 1
     EquipSpeed: 1
+    IsBurstAvailable: 0
+    IsBurstActive: 0
+    BurstFireDelay: 0
+    BurstModeBulletsPerShot: 0
+    BurstModeFireRate: 0
     FireRate: 1
+    DefaultFireRate: 0
     ShootingMode: 0
-  - WeaponType: 2
-    BulletsInMagazine: 6
+    BulletsPerShot: 0
+    BaseSpread: 0.5
+    CurrentSpread: 2
+    MaxSpread: 3
+    spreadIncreaseRate: 0.15
+  - WeaponType: 3
+    BulletsInMagazine: 30
     MagazineCapacity: 66
-    TotalReservedAmmo: 82
+    TotalReservedAmmo: 217
     ReloadSpeed: 1
     EquipSpeed: 1
-    FireRate: 6.31
-    ShootingMode: 1
+    IsBurstAvailable: 0
+    IsBurstActive: 0
+    BurstFireDelay: 0.1
+    BurstModeBulletsPerShot: 3
+    BurstModeFireRate: 1.5
+    FireRate: 1
+    DefaultFireRate: 1
+    ShootingMode: 0
+    BulletsPerShot: 5
+    BaseSpread: 15
+    CurrentSpread: 0
+    MaxSpread: 15
+    spreadIncreaseRate: 0.15
   _weaponHolder: {fileID: 2087027425}
   _currentWeapon:
     WeaponType: 1
@@ -4347,8 +4380,19 @@ MonoBehaviour:
     TotalReservedAmmo: 10
     ReloadSpeed: 1
     EquipSpeed: 1
+    IsBurstAvailable: 0
+    IsBurstActive: 0
+    BurstFireDelay: 0
+    BurstModeBulletsPerShot: 0
+    BurstModeFireRate: 0
     FireRate: 1
+    DefaultFireRate: 0
     ShootingMode: 0
+    BulletsPerShot: 0
+    BaseSpread: 0
+    CurrentSpread: 2
+    MaxSpread: 3
+    spreadIncreaseRate: 0.15
 --- !u!114 &1374047014
 MonoBehaviour:
   m_ObjectHideFlags: 0

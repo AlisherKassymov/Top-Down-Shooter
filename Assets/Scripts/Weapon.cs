@@ -1,8 +1,8 @@
 using System;
 using Sirenix.OdinInspector;
-using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Random = UnityEngine.Random;
 
 [Serializable]
 public class Weapon
@@ -11,29 +11,70 @@ public class Weapon
 
     [FoldoutGroup("Magazine Details")] [FormerlySerializedAs("Ammo")]
     public int BulletsInMagazine;
-
     [FoldoutGroup("Magazine Details")] public int MagazineCapacity;
-
     [FoldoutGroup("Magazine Details")] [FormerlySerializedAs("MaxAmmo")]
     public int TotalReservedAmmo;
 
-    [Space] [Range(1, 2)] [FoldoutGroup("Speed Settings")]
-    public float ReloadSpeed = 1;
-
-    [Range(1, 2)] [FoldoutGroup("Speed Settings")]
-    public float EquipSpeed = 1;
-
-    [Space] [FoldoutGroup("Shooting settings")]
-    private float _lastShootTime;
+    [Space] [Range(1, 2)] [FoldoutGroup("Speed Settings")] public float ReloadSpeed = 1;
+    [Range(1, 2)] [FoldoutGroup("Speed Settings")] public float EquipSpeed = 1;
+    
+    [FoldoutGroup("Burst Fire")] public bool IsBurstAvailable;
+    [FoldoutGroup("Burst Fire")] public bool IsBurstActive;
+    [FoldoutGroup("Burst Fire")] public float BurstFireDelay;
+    [FoldoutGroup("Burst Fire")] public int BurstModeBulletsPerShot;
+    [FoldoutGroup("Burst Fire")] public float BurstModeFireRate;
 
     [FoldoutGroup("Shooting settings")] public float FireRate = 1;
+    [FoldoutGroup("Shooting settings")] public float DefaultFireRate;
     [FoldoutGroup("Shooting settings")] public ShootingMode ShootingMode;
+    [FoldoutGroup("Shooting settings")] private float _lastShootTime;
+    [FoldoutGroup("Shooting settings")] public int BulletsPerShot;
+    
+    [FoldoutGroup("Spread settings")] public float BaseSpread = 1;
+    [FoldoutGroup("Spread settings")] public float CurrentSpread = 1;
+    [FoldoutGroup("Spread settings")] public float MaxSpread = 3;
+    [FoldoutGroup("Spread settings")] public float spreadIncreaseRate = 0.15f;
+    private float _lastSpreadUpdateTime;
+    private float _spreadCooldown = 1;
 
+
+    #region Burst methods
+
+    public bool IsBurstActivated()
+    {
+        if (WeaponType == WeaponType.Shotgun)
+        {
+            BurstFireDelay = 0;
+            return true;
+        }
+
+        return IsBurstActive;
+    }
+
+    public void ToggleBurstMode()
+    {
+        if (IsBurstAvailable == false)
+        {
+            return;
+        }
+        IsBurstActive = !IsBurstActive;
+        if (IsBurstActive)
+        {
+            BulletsPerShot = BurstModeBulletsPerShot;
+            FireRate = BurstModeFireRate;
+        }
+        else
+        {
+            BulletsPerShot = 1;
+            FireRate = DefaultFireRate;
+        }
+    }
+
+    #endregion
     public bool CanShoot()
     {
         if (HaveEnoughBullets() && IsReadyToShoot())
         {
-            BulletsInMagazine--;
             return true;
         }
 
@@ -50,6 +91,37 @@ public class Weapon
 
         return false;
     }
+
+    #region SpreadMethods
+
+    public Vector3 ApplySpread(Vector3 originalDirection)
+    {
+        UpdateSpread();
+        float randomizedValue = Random.Range(-CurrentSpread, CurrentSpread);
+        Quaternion spreadRotation = Quaternion.Euler(randomizedValue, randomizedValue, randomizedValue);
+        return spreadRotation * originalDirection;
+    }
+
+    private void IncreaseSpread()
+    {
+        CurrentSpread = Mathf.Clamp(CurrentSpread + spreadIncreaseRate, BaseSpread, MaxSpread);
+    }
+
+    private void UpdateSpread()
+    {
+        if (Time.time > _lastSpreadUpdateTime + _spreadCooldown)
+        {
+            CurrentSpread = BaseSpread;
+        }
+        else
+        {
+            IncreaseSpread();
+        }
+
+        _lastSpreadUpdateTime = Time.time;
+    }
+
+    #endregion
 
     #region Reload Methods
 

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -44,8 +45,26 @@ namespace Controllers
             {
                 Shoot();
             }
+
+            if (Input.GetKeyDown(KeyCode.T))
+            {
+                _currentWeapon.ToggleBurstMode();
+            }
         }
 
+        IEnumerator BurstFire()
+        {
+            SetWeaponReady(false);
+            for (int i = 1; i <= _currentWeapon.BulletsPerShot; i++)
+            {
+                FireSingleBullet();
+                yield return new WaitForSeconds(_currentWeapon.BurstFireDelay);
+                if (i >= _currentWeapon.BulletsPerShot)
+                {
+                    SetWeaponReady(true);
+                }
+            }
+        }
         private void Shoot()
         {
             if (IsWeaponReady() == false)
@@ -56,20 +75,36 @@ namespace Controllers
             {
                 return;
             }
+            _player.PlayerWeaponVisuals.PlayFireAnimation();
 
             if (_currentWeapon.ShootingMode == ShootingMode.Single)
             {
                 _isShooting = false;
             }
+
+            if (_currentWeapon.IsBurstActivated())
+            {
+                StartCoroutine(BurstFire());
+                return;
+            }
             
-            //Instantiate(_bulletPrefab, _gunPoint.position, Quaternion.LookRotation(_gunPoint.forward));
+            FireSingleBullet();
+        }
+
+        private void FireSingleBullet()
+        {
+            _currentWeapon.BulletsInMagazine--;
+            
             var newBullet = ObjectPool.Instance.GetBullet();
             Rigidbody rbNewBullet = newBullet.GetComponent<Rigidbody>();
+            
             newBullet.transform.position = GetGunPoint().position;
             newBullet.transform.rotation = Quaternion.LookRotation(GetGunPoint().forward);
+
+            Vector3 bulletsDirection = _currentWeapon.ApplySpread(GetBulletDirection());
+            
             rbNewBullet.mass = REFERENCE_BULLET_SPEED / _bulletSpeed;
-            rbNewBullet.linearVelocity = GetBulletDirection() * _bulletSpeed;
-            _player.PlayerWeaponVisuals.PlayFireAnimation();
+            rbNewBullet.linearVelocity = bulletsDirection * _bulletSpeed;
         }
 
         private void EquipWeapon(int index)
