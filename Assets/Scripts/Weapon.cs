@@ -9,11 +9,15 @@ public class Weapon
 {
     public WeaponType WeaponType;
 
-    [FoldoutGroup("Magazine Details")] [FormerlySerializedAs("Ammo")]
-    public int BulletsInMagazine;
+    [FoldoutGroup("Shooting settings")] public ShootingMode ShootingMode;
+    [FoldoutGroup("Shooting settings")] public float FireRate = 1;
+    [FoldoutGroup("Shooting settings")] public float DefaultFireRate;
+    [FoldoutGroup("Shooting settings")] private float _lastShootTime;
+    [FoldoutGroup("Shooting settings")] public int BulletsPerShot;
+    
+    [FoldoutGroup("Magazine Details")] [FormerlySerializedAs("Ammo")] public int BulletsInMagazine;
     [FoldoutGroup("Magazine Details")] public int MagazineCapacity;
-    [FoldoutGroup("Magazine Details")] [FormerlySerializedAs("MaxAmmo")]
-    public int TotalReservedAmmo;
+    [FoldoutGroup("Magazine Details")] [FormerlySerializedAs("MaxAmmo")] public int TotalReservedAmmo;
 
     [Space] [Range(1, 2)] [FoldoutGroup("Speed Settings")] public float ReloadSpeed = 1;
     [Range(1, 2)] [FoldoutGroup("Speed Settings")] public float EquipSpeed = 1;
@@ -23,17 +27,13 @@ public class Weapon
     [FoldoutGroup("Burst Fire")] public float BurstFireDelay;
     [FoldoutGroup("Burst Fire")] public int BurstModeBulletsPerShot;
     [FoldoutGroup("Burst Fire")] public float BurstModeFireRate;
-
-    [FoldoutGroup("Shooting settings")] public float FireRate = 1;
-    [FoldoutGroup("Shooting settings")] public float DefaultFireRate;
-    [FoldoutGroup("Shooting settings")] public ShootingMode ShootingMode;
-    [FoldoutGroup("Shooting settings")] private float _lastShootTime;
-    [FoldoutGroup("Shooting settings")] public int BulletsPerShot;
     
     [FoldoutGroup("Spread settings")] public float BaseSpread = 1;
     [FoldoutGroup("Spread settings")] public float CurrentSpread = 1;
     [FoldoutGroup("Spread settings")] public float MaxSpread = 3;
     [FoldoutGroup("Spread settings")] public float spreadIncreaseRate = 0.15f;
+    
+    [FoldoutGroup("CameraSettings")] [Range(3,8)] public float CameraDistance = 6;
     private float _lastSpreadUpdateTime;
     private float _spreadCooldown = 1;
 

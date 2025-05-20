@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Managers;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -112,6 +113,7 @@ namespace Controllers
             SetWeaponReady(false);
             _currentWeapon = _weaponSlots[index];
             _player.PlayerWeaponVisuals.PlayWeaponEquipAnimation();
+            CameraManager.Instance.ChangeCameraDistance(_currentWeapon.CameraDistance);
         }
 
         private void EquipStartingWeapon()

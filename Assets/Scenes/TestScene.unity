@@ -128,6 +128,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2063833}
+  - component: {fileID: 2063834}
   m_Layer: 0
   m_Name: Camera
   m_TagString: Untagged
@@ -152,6 +153,19 @@ Transform:
   - {fileID: 330585546}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2063834
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2063832}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48c80a4676d8d96488d8b14beb109afd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _distanceChangeRate: 0.5
 --- !u!1 &2616965
 GameObject:
   m_ObjectHideFlags: 0
@@ -987,6 +1001,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _weapon:
     WeaponType: 2
+    ShootingMode: 0
+    FireRate: 1
+    DefaultFireRate: 0
+    BulletsPerShot: 0
     BulletsInMagazine: 40
     MagazineCapacity: 0
     TotalReservedAmmo: 40
@@ -997,14 +1015,11 @@ MonoBehaviour:
     BurstFireDelay: 0
     BurstModeBulletsPerShot: 0
     BurstModeFireRate: 0
-    FireRate: 1
-    DefaultFireRate: 0
-    ShootingMode: 0
-    BulletsPerShot: 0
     BaseSpread: 0
     CurrentSpread: 2
     MaxSpread: 3
     spreadIncreaseRate: 0.15
+    CameraDistance: 6
 --- !u!65 &158150396
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1994,7 +2009,7 @@ Transform:
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
   m_LocalRotation: {x: 0.5, y: 0, z: 0, w: 0.8660254}
-  m_LocalPosition: {x: 0, y: -3.1399999, z: 2.4}
+  m_LocalPosition: {x: 0, y: 1.3402538, z: 2.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3247,7 +3262,7 @@ Transform:
   m_GameObject: {fileID: 810649593}
   serializedVersion: 2
   m_LocalRotation: {x: 0.5, y: -0, z: -0, w: 0.8660254}
-  m_LocalPosition: {x: 0, y: -3.1399999, z: 2.4}
+  m_LocalPosition: {x: 0, y: 1.3402538, z: 2.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3262,16 +3277,28 @@ MonoBehaviour:
   m_GameObject: {fileID: 810649593}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b617507da6d07e749b7efdb34e1173e1, type: 3}
+  m_Script: {fileID: 11500000, guid: 886251e9a18ece04ea8e61686c173e1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TrackerSettings:
-    BindingMode: 4
-    PositionDamping: {x: 1, y: 1, z: 1}
-    AngularDampingMode: 0
-    RotationDamping: {x: 1, y: 1, z: 1}
-    QuaternionDamping: 1
-  FollowOffset: {x: 0, y: 4.18, z: -4.7}
+  CameraDistance: 10
+  DeadZoneDepth: 0
+  Composition:
+    ScreenPosition: {x: 0, y: 0}
+    DeadZone:
+      Enabled: 0
+      Size: {x: 0.2, y: 0.2}
+    HardLimits:
+      Enabled: 0
+      Size: {x: 0.8, y: 0.8}
+      Offset: {x: 0, y: 0}
+  CenterOnActivate: 1
+  TargetOffset: {x: 0, y: 0, z: 0}
+  Damping: {x: 1, y: 1, z: 1}
+  Lookahead:
+    Enabled: 0
+    Time: 0
+    Smoothing: 0
+    IgnoreY: 0
 --- !u!1001 &812005759
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4335,6 +4362,10 @@ MonoBehaviour:
   _bulletSpeed: 20
   _weaponSlots:
   - WeaponType: 0
+    ShootingMode: 0
+    FireRate: 1
+    DefaultFireRate: 0
+    BulletsPerShot: 0
     BulletsInMagazine: 10
     MagazineCapacity: 56
     TotalReservedAmmo: 117
@@ -4345,15 +4376,16 @@ MonoBehaviour:
     BurstFireDelay: 0
     BurstModeBulletsPerShot: 0
     BurstModeFireRate: 0
-    FireRate: 1
-    DefaultFireRate: 0
-    ShootingMode: 0
-    BulletsPerShot: 0
     BaseSpread: 0.5
     CurrentSpread: 2
     MaxSpread: 3
     spreadIncreaseRate: 0.15
+    CameraDistance: 6
   - WeaponType: 3
+    ShootingMode: 0
+    FireRate: 1
+    DefaultFireRate: 1
+    BulletsPerShot: 5
     BulletsInMagazine: 30
     MagazineCapacity: 66
     TotalReservedAmmo: 217
@@ -4364,17 +4396,18 @@ MonoBehaviour:
     BurstFireDelay: 0.1
     BurstModeBulletsPerShot: 3
     BurstModeFireRate: 1.5
-    FireRate: 1
-    DefaultFireRate: 1
-    ShootingMode: 0
-    BulletsPerShot: 5
     BaseSpread: 15
     CurrentSpread: 0
     MaxSpread: 15
     spreadIncreaseRate: 0.15
+    CameraDistance: 4
   _weaponHolder: {fileID: 2087027425}
   _currentWeapon:
     WeaponType: 1
+    ShootingMode: 0
+    FireRate: 1
+    DefaultFireRate: 0
+    BulletsPerShot: 0
     BulletsInMagazine: 0
     MagazineCapacity: 0
     TotalReservedAmmo: 10
@@ -4385,14 +4418,11 @@ MonoBehaviour:
     BurstFireDelay: 0
     BurstModeBulletsPerShot: 0
     BurstModeFireRate: 0
-    FireRate: 1
-    DefaultFireRate: 0
-    ShootingMode: 0
-    BulletsPerShot: 0
     BaseSpread: 0
     CurrentSpread: 2
     MaxSpread: 3
     spreadIncreaseRate: 0.15
+    CameraDistance: 6
 --- !u!114 &1374047014
 MonoBehaviour:
   m_ObjectHideFlags: 0
