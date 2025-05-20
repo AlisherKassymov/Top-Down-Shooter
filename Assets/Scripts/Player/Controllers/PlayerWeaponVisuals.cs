@@ -142,7 +142,7 @@ namespace Controllers
                 {
                     continue;
                 }
-                if (_player.PlayerWeaponController.HasWeaponTypeInInventory(backupWeapon.WeaponType))
+                if (_player.PlayerWeaponController.GetWeaponTypeInInventory(backupWeapon.WeaponType) != null)
                 {
                     if (backupWeapon.GetHangType(HangType.LowBackHang))
                     {

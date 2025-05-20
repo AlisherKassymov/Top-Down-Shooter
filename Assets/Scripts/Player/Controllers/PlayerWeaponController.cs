@@ -46,11 +46,7 @@ namespace Controllers
             {
                 Shoot();
             }
-
-            if (Input.GetKeyDown(KeyCode.T))
-            {
-                _currentWeapon.ToggleBurstMode();
-            }
+            
         }
 
         IEnumerator BurstFire()
@@ -153,16 +149,9 @@ namespace Controllers
         
         public bool HasOnlyOneWeapon() => _weaponSlots.Count <= 1;
 
-        public bool HasWeaponTypeInInventory(WeaponType weaponType)
+        public Weapon GetWeaponTypeInInventory(WeaponType weaponType)
         {
-            foreach (var weapon in _weaponSlots)
-            {
-                if (weapon.WeaponType == weaponType)
-                {
-                    return true;
-                }
-            }
-            return false;
+            return _weaponSlots.FirstOrDefault(weapon => weapon.WeaponType == weaponType);
         }
         public Vector3 GetBulletDirection()
         {
@@ -187,6 +176,7 @@ namespace Controllers
             playerControls.Character.EquipSlot2.performed += ctx => EquipWeapon(1);
             playerControls.Character.EquipSlot3.performed += ctx => EquipWeapon(2);
             playerControls.Character.EquipSlot4.performed += ctx => EquipWeapon(3);
+            playerControls.Character.ToggleWeaponMode.performed += ctx => _currentWeapon.ToggleBurstMode();
             playerControls.Character.DropCurrentWeapon.performed += ctx => DropWeapon();
             playerControls.Character.Reload.performed += ctx =>
             {
@@ -204,11 +194,7 @@ namespace Controllers
         }
 
         public Weapon CurrenWeapon() => _currentWeapon;
-
-        public Weapon BackupWeapon()
-        {
-            return _weaponSlots.FirstOrDefault(weapon => weapon != _currentWeapon);
-        }
+        
         public Transform GetGunPoint() => _player.PlayerWeaponVisuals.ReturnCurrenWeaponModel().GunPoint;
     }
 }
