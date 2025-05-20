@@ -77,6 +77,17 @@ namespace Controls
 
         private void UpdateAimVisuals()
         {
+            _aimLaser.enabled = _player.PlayerWeaponController.IsWeaponReady();
+
+            if (_aimLaser.enabled == false)
+            {
+                return;
+            }
+
+            var weaponModel = _player.PlayerWeaponVisuals.ReturnCurrenWeaponModel();
+            weaponModel.transform.LookAt(_aim);
+            weaponModel.GunPoint.LookAt(_aim);
+            
             var laserDirection = _player.PlayerWeaponController.GetBulletDirection();
             var gunPoint = _player.PlayerWeaponController.GetGunPoint();
 

@@ -5,16 +5,19 @@ using UnityEngine;
 public class PlayerAnimationEvents : MonoBehaviour
 {
     private PlayerWeaponVisuals _playerWeaponVisuals;
+    private PlayerWeaponController _playerWeaponController;
 
     private void Start()
     {
         _playerWeaponVisuals = GetComponentInParent<PlayerWeaponVisuals>();
+        _playerWeaponController = GetComponentInParent<PlayerWeaponController>();
     }
 
     public void CompleteReloadAnimation()
     {
         _playerWeaponVisuals.MaximizeRigWeight();
-        //Refill ammo
+        _playerWeaponController.CurrenWeapon().ReloadMagazine();
+        _playerWeaponController.SetWeaponReady(true);
     }
 
     public void ReturnRig()
@@ -24,6 +27,8 @@ public class PlayerAnimationEvents : MonoBehaviour
     }
     public void CompleteWeaponGrab()
     {
-        _playerWeaponVisuals.SetBusyGrabbingWeaponTo(false);
+        _playerWeaponController.SetWeaponReady(true);
     }
+
+    public void SwitchOnWeaponModel() => _playerWeaponVisuals.SwitchOnCurrentWeaponModel();
 }
