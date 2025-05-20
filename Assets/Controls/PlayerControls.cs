@@ -82,6 +82,24 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""Equip Slot -3"",
+                    ""type"": ""Button"",
+                    ""id"": ""608b3371-d9ae-47d0-be5e-f8421c1e056a"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Equip Slot -4"",
+                    ""type"": ""Button"",
+                    ""id"": ""25c0bb72-51ca-4d0f-85d3-51bded84eb7b"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""Drop Current Weapon"",
                     ""type"": ""Button"",
                     ""id"": ""74402823-e4e5-4ce8-b528-763160c0fb29"",
@@ -213,6 +231,28 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""88049e30-b46d-4a16-9909-cff96065146d"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Equip Slot -3"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0e7e439b-df37-4a40-89cc-981553a9c2f1"",
+                    ""path"": ""<Keyboard>/4"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Equip Slot -4"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""76e635e9-c5b1-47c6-b3cc-2c5420cc2444"",
                     ""path"": ""<Keyboard>/g"",
                     ""interactions"": """",
@@ -246,6 +286,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Character_Run = m_Character.FindAction("Run", throwIfNotFound: true);
         m_Character_EquipSlot1 = m_Character.FindAction("Equip Slot -1", throwIfNotFound: true);
         m_Character_EquipSlot2 = m_Character.FindAction("Equip Slot -2", throwIfNotFound: true);
+        m_Character_EquipSlot3 = m_Character.FindAction("Equip Slot -3", throwIfNotFound: true);
+        m_Character_EquipSlot4 = m_Character.FindAction("Equip Slot -4", throwIfNotFound: true);
         m_Character_DropCurrentWeapon = m_Character.FindAction("Drop Current Weapon", throwIfNotFound: true);
         m_Character_Reload = m_Character.FindAction("Reload", throwIfNotFound: true);
     }
@@ -320,6 +362,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Character_Run;
     private readonly InputAction m_Character_EquipSlot1;
     private readonly InputAction m_Character_EquipSlot2;
+    private readonly InputAction m_Character_EquipSlot3;
+    private readonly InputAction m_Character_EquipSlot4;
     private readonly InputAction m_Character_DropCurrentWeapon;
     private readonly InputAction m_Character_Reload;
     public struct CharacterActions
@@ -332,6 +376,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @Run => m_Wrapper.m_Character_Run;
         public InputAction @EquipSlot1 => m_Wrapper.m_Character_EquipSlot1;
         public InputAction @EquipSlot2 => m_Wrapper.m_Character_EquipSlot2;
+        public InputAction @EquipSlot3 => m_Wrapper.m_Character_EquipSlot3;
+        public InputAction @EquipSlot4 => m_Wrapper.m_Character_EquipSlot4;
         public InputAction @DropCurrentWeapon => m_Wrapper.m_Character_DropCurrentWeapon;
         public InputAction @Reload => m_Wrapper.m_Character_Reload;
         public InputActionMap Get() { return m_Wrapper.m_Character; }
@@ -361,6 +407,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @EquipSlot2.started += instance.OnEquipSlot2;
             @EquipSlot2.performed += instance.OnEquipSlot2;
             @EquipSlot2.canceled += instance.OnEquipSlot2;
+            @EquipSlot3.started += instance.OnEquipSlot3;
+            @EquipSlot3.performed += instance.OnEquipSlot3;
+            @EquipSlot3.canceled += instance.OnEquipSlot3;
+            @EquipSlot4.started += instance.OnEquipSlot4;
+            @EquipSlot4.performed += instance.OnEquipSlot4;
+            @EquipSlot4.canceled += instance.OnEquipSlot4;
             @DropCurrentWeapon.started += instance.OnDropCurrentWeapon;
             @DropCurrentWeapon.performed += instance.OnDropCurrentWeapon;
             @DropCurrentWeapon.canceled += instance.OnDropCurrentWeapon;
@@ -389,6 +441,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @EquipSlot2.started -= instance.OnEquipSlot2;
             @EquipSlot2.performed -= instance.OnEquipSlot2;
             @EquipSlot2.canceled -= instance.OnEquipSlot2;
+            @EquipSlot3.started -= instance.OnEquipSlot3;
+            @EquipSlot3.performed -= instance.OnEquipSlot3;
+            @EquipSlot3.canceled -= instance.OnEquipSlot3;
+            @EquipSlot4.started -= instance.OnEquipSlot4;
+            @EquipSlot4.performed -= instance.OnEquipSlot4;
+            @EquipSlot4.canceled -= instance.OnEquipSlot4;
             @DropCurrentWeapon.started -= instance.OnDropCurrentWeapon;
             @DropCurrentWeapon.performed -= instance.OnDropCurrentWeapon;
             @DropCurrentWeapon.canceled -= instance.OnDropCurrentWeapon;
@@ -420,6 +478,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnRun(InputAction.CallbackContext context);
         void OnEquipSlot1(InputAction.CallbackContext context);
         void OnEquipSlot2(InputAction.CallbackContext context);
+        void OnEquipSlot3(InputAction.CallbackContext context);
+        void OnEquipSlot4(InputAction.CallbackContext context);
         void OnDropCurrentWeapon(InputAction.CallbackContext context);
         void OnReload(InputAction.CallbackContext context);
     }

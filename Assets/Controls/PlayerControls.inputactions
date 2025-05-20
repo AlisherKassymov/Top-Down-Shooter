@@ -60,6 +60,24 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "Equip Slot -3",
+                    "type": "Button",
+                    "id": "608b3371-d9ae-47d0-be5e-f8421c1e056a",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Equip Slot -4",
+                    "type": "Button",
+                    "id": "25c0bb72-51ca-4d0f-85d3-51bded84eb7b",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Drop Current Weapon",
                     "type": "Button",
                     "id": "74402823-e4e5-4ce8-b528-763160c0fb29",
@@ -186,6 +204,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "Equip Slot -2",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "88049e30-b46d-4a16-9909-cff96065146d",
+                    "path": "<Keyboard>/3",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Equip Slot -3",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0e7e439b-df37-4a40-89cc-981553a9c2f1",
+                    "path": "<Keyboard>/4",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Equip Slot -4",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

@@ -9,8 +9,8 @@ namespace Managers
         public static CameraManager Instance;
 
         [SerializeField] private float _distanceChangeRate;
+        [SerializeField] private bool _enableCameraDistanceMovement;
         
-        private CinemachineCamera _cinemachineCamera;
         private CinemachinePositionComposer _positionComposer;
         private float _targetCameraDistance;
 
@@ -25,8 +25,7 @@ namespace Managers
                 Debug.LogWarning("Two Camera managers were detected on the scene. Destroying the second one.");
                 Destroy(gameObject);
             }
-
-            _cinemachineCamera = GetComponentInChildren<CinemachineCamera>();
+            
             _positionComposer = GetComponentInChildren<CinemachinePositionComposer>();
         }
 
@@ -37,6 +36,10 @@ namespace Managers
 
         private void UpdateCameraDistance()
         {
+            if (_enableCameraDistanceMovement == false)
+            {
+                return;
+            }
             float currentDistance = _positionComposer.CameraDistance;
             if (Mathf.Abs(_targetCameraDistance - currentDistance) > .01f)
             {

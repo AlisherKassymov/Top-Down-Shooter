@@ -110,6 +110,10 @@ namespace Controllers
 
         private void EquipWeapon(int index)
         {
+            if (index >= _weaponSlots.Count)
+            {
+                return;
+            }
             SetWeaponReady(false);
             _currentWeapon = _weaponSlots[index];
             _player.PlayerWeaponVisuals.PlayWeaponEquipAnimation();
@@ -148,6 +152,18 @@ namespace Controllers
         }
         
         public bool HasOnlyOneWeapon() => _weaponSlots.Count <= 1;
+
+        public bool HasWeaponTypeInInventory(WeaponType weaponType)
+        {
+            foreach (var weapon in _weaponSlots)
+            {
+                if (weapon.WeaponType == weaponType)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
         public Vector3 GetBulletDirection()
         {
             Transform aim = _player.PlayerAim.GetAim();
@@ -169,6 +185,8 @@ namespace Controllers
             
             playerControls.Character.EquipSlot1.performed += ctx => EquipWeapon(0);
             playerControls.Character.EquipSlot2.performed += ctx => EquipWeapon(1);
+            playerControls.Character.EquipSlot3.performed += ctx => EquipWeapon(2);
+            playerControls.Character.EquipSlot4.performed += ctx => EquipWeapon(3);
             playerControls.Character.DropCurrentWeapon.performed += ctx => DropWeapon();
             playerControls.Character.Reload.performed += ctx =>
             {

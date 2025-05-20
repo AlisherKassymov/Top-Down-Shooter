@@ -124,20 +124,45 @@ namespace Controllers
         {
             foreach (var weapon in _backupWeapons)
             {
-                weapon.gameObject.SetActive(false);
+                weapon.Activate(false);
             }
         }
 
         public void SwitchOnBackUpWeaponModel()
         {
-            var weaponType = _player.PlayerWeaponController.BackupWeapon().WeaponType;
+           SwitchOffBackUpWeaponModels();
+           
+           BackupWeaponModel lowHangWeapon = null;
+           BackupWeaponModel backHangWeapon = null;
+           BackupWeaponModel sideHangWeapon = null;
+           
             foreach (var backupWeapon in _backupWeapons)
             {
-                if (backupWeapon.WeaponType == weaponType)
+                if (backupWeapon.WeaponType == _player.PlayerWeaponController.CurrenWeapon().WeaponType)
                 {
-                    backupWeapon.gameObject.SetActive(true);
+                    continue;
+                }
+                if (_player.PlayerWeaponController.HasWeaponTypeInInventory(backupWeapon.WeaponType))
+                {
+                    if (backupWeapon.GetHangType(HangType.LowBackHang))
+                    {
+                        lowHangWeapon = backupWeapon;
+                    }
+
+                    if (backupWeapon.GetHangType(HangType.BackHang))
+                    {
+                        backHangWeapon = backupWeapon;
+                    }
+
+                    if (backupWeapon.GetHangType(HangType.SideHang))
+                    {
+                        sideHangWeapon = backupWeapon;
+                    }
                 }
             }
+            lowHangWeapon?.Activate(true);
+            backHangWeapon?.Activate(true);
+            sideHangWeapon?.Activate(true);
         }
 
         #region AnimationRiggingMethods

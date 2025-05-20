@@ -166,6 +166,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _distanceChangeRate: 0.5
+  _enableCameraDistanceMovement: 0
 --- !u!1 &2616965
 GameObject:
   m_ObjectHideFlags: 0
@@ -946,6 +947,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3ae9befee288524e9a99401ed775e9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _hangType: 1
   WeaponType: 2
 --- !u!4 &150156282 stripped
 Transform:
@@ -1470,15 +1472,15 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 228876353}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.1539067, y: 0.7038952, z: -0.31781712, w: 0.6163088}
-  m_LocalPosition: {x: 0.009, y: -0.05, z: -0.157}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalRotation: {x: -0.020804526, y: 0.1541844, z: -0.63576525, w: 0.7560403}
+  m_LocalPosition: {x: 0.213, y: -0.085, z: -0.029}
+  m_LocalScale: {x: 0.9, y: 0.9, z: 0.9}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 4844838857186929069}
   - {fileID: 6592640717359614}
   m_Father: {fileID: 5104232926870709883}
-  m_LocalEulerAnglesHint: {x: 14.934, y: 92.272, z: -39.027}
+  m_LocalEulerAnglesHint: {x: 9.474, y: 15.259, z: -78.85}
 --- !u!114 &228876355
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1491,6 +1493,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3ae9befee288524e9a99401ed775e9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _hangType: 0
   WeaponType: 3
 --- !u!1 &235307322
 GameObject:
@@ -4154,6 +4157,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3ae9befee288524e9a99401ed775e9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _hangType: 2
   WeaponType: 1
 --- !u!1001 &1274018697
 PrefabInstance:
@@ -4401,6 +4405,26 @@ MonoBehaviour:
     MaxSpread: 15
     spreadIncreaseRate: 0.15
     CameraDistance: 4
+  - WeaponType: 4
+    ShootingMode: 0
+    FireRate: 1
+    DefaultFireRate: 0
+    BulletsPerShot: 0
+    BulletsInMagazine: 0
+    MagazineCapacity: 0
+    TotalReservedAmmo: 0
+    ReloadSpeed: 1
+    EquipSpeed: 1
+    IsBurstAvailable: 0
+    IsBurstActive: 0
+    BurstFireDelay: 0
+    BurstModeBulletsPerShot: 0
+    BurstModeFireRate: 0
+    BaseSpread: 1
+    CurrentSpread: 1
+    MaxSpread: 3
+    spreadIncreaseRate: 0.15
+    CameraDistance: 6
   _weaponHolder: {fileID: 2087027425}
   _currentWeapon:
     WeaponType: 1
@@ -5659,6 +5683,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3ae9befee288524e9a99401ed775e9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _hangType: 1
   WeaponType: 4
 --- !u!1001 &1853479483
 PrefabInstance:
@@ -6421,6 +6446,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3ae9befee288524e9a99401ed775e9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _hangType: 2
   WeaponType: 0
 --- !u!1 &2040196739
 GameObject:
