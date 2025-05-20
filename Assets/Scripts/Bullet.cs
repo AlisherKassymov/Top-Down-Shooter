@@ -11,16 +11,21 @@ public class Bullet : MonoBehaviour
         if (_bulletLifeTime <= 0 && gameObject.activeSelf)
         {
             _bulletLifeTime = 5;
-            ObjectPool.Instance.ReturnBullet(gameObject);
+            ReturnBulletToPool();
         }
         _bulletLifeTime -= Time.deltaTime;
     }
-    
+
+    private void ReturnBulletToPool()
+    {
+        ObjectPool.Instance.ReturnObject(gameObject);
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
         CreateImpactFX(collision);
         GetComponent<TrailRenderer>().Clear();
-        ObjectPool.Instance.ReturnBullet(gameObject);
+        ObjectPool.Instance.ReturnObject(gameObject);
     }
 
     private void CreateImpactFX(Collision collision)
@@ -28,8 +33,10 @@ public class Bullet : MonoBehaviour
         if (collision.contacts.Length > 0)
         {
             ContactPoint contactPoint = collision.contacts[0];
-            GameObject newImpactFX = Instantiate(_bulletImpactFX, contactPoint.point, Quaternion.LookRotation(contactPoint.normal));
-            Destroy(newImpactFX, 1f);
+            //GameObject newImpactFX = Instantiate(_bulletImpactFX, contactPoint.point, Quaternion.LookRotation(contactPoint.normal));
+            GameObject newImpactFX = ObjectPool.Instance.GetObject(_bulletImpactFX);
+            newImpactFX.transform.position = contactPoint.point;
+            ObjectPool.Instance.ReturnObject(newImpactFX, 1f);
         }
     }
 }

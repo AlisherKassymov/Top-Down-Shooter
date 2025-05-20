@@ -92,7 +92,7 @@ namespace Controllers
         {
             _currentWeapon.BulletsInMagazine--;
             
-            var newBullet = ObjectPool.Instance.GetBullet();
+            var newBullet = ObjectPool.Instance.GetObject(_bulletPrefab);
             Rigidbody rbNewBullet = newBullet.GetComponent<Rigidbody>();
             
             newBullet.transform.position = GetGunPoint().position;
