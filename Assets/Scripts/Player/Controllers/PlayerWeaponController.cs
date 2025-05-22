@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Managers;
+using ScriptableObjects;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -28,6 +29,7 @@ namespace Controllers
         [SerializeField] private Transform _weaponHolder;
         
         [SerializeField] private Weapon _currentWeapon;
+        [SerializeField] private WeaponData _defaultWeaponData;
         
         private Player _player;
         private bool _isWeaponReady;
@@ -92,7 +94,7 @@ namespace Controllers
         {
             _currentWeapon.BulletsInMagazine--;
             
-            var newBullet = ObjectPool.Instance.GetBullet();
+            var newBullet = ObjectPool.Instance.GetObject(_bulletPrefab);
             Rigidbody rbNewBullet = newBullet.GetComponent<Rigidbody>();
             
             newBullet.transform.position = GetGunPoint().position;
@@ -118,6 +120,7 @@ namespace Controllers
 
         private void EquipStartingWeapon()
         {
+            _weaponSlots[0] = new Weapon(_defaultWeaponData);
             EquipWeapon(0);
         }
 
@@ -136,14 +139,14 @@ namespace Controllers
             _isWeaponReady = isReady;
         }
         public bool IsWeaponReady() => _isWeaponReady;
-        public void PickUpWeapon(Weapon newWeapon)
+        public void PickUpWeapon(WeaponData newWeapon)
         {
             if (_weaponSlots.Count >= _maxSlots)
             {
                 Debug.Log("No slots available");
                 return;
             }
-            _weaponSlots.Add(newWeapon);
+            _weaponSlots.Add(new Weapon(newWeapon));
             _player.PlayerWeaponVisuals.SwitchOnBackUpWeaponModel();
         }
         
